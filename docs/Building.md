@@ -6,7 +6,7 @@
 - Compiler and Toolchain:
   - Visual Studio 2017 Community
   - .NET Framework 4.5 Toolchain
-- [NuGet CLI](https://www.nuget.org/downloads) (¡Ý 4.3.0)
+- [NuGet CLI](https://www.nuget.org/downloads) (â‰¥ 4.3.0)
 
 > **Remember** to [update your NuGet version](https://docs.microsoft.com/en-us/nuget/guides/install-nuget) before building.
 > Otherwise you are very likely to see errors like "Too many projects specified".
