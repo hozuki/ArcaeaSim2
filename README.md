@@ -7,7 +7,8 @@ ArcaeaSim is built on [MilliSim](https://github.com/hozuki/MilliSim). Thus this 
 ArcaeaSim is in alpha phase so please don't expect a splendid visual effect.
 However, neither is it expected to go beyond the line to be a clone of Arcaea.
 
-[Demo video](https://www.bilibili.com/video/av19881005/) (even before the initial commit; a very early technical preview so it may not look very appealing)
+- [Demo video 1](https://www.bilibili.com/video/av19881005/) (even before the initial commit; a very early technical preview so it may not look very appealing)
+- [Demo video 2](https://www.bilibili.com/video/av19981419/) (that's better)
 
 ## Usage
 
