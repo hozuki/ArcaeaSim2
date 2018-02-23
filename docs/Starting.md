@@ -16,10 +16,18 @@ Visibility order: `public` -> `protected` -> `private`
 
 ## Coordinate Systems
 
-Arcaea's beatmap coordinate system, Arcaea's coordinate system (in code), as well as ArcaeaSim's coordinate system (in code):
+Arcaea's beatmap coordinate system and Arcaea's coordinate system (in code): left hand, Y-up (OpenGL coordinate system).
 
 ```plain
      Y
   Z  |
+    \--X
+```
+
+ArcaeaSim's coordinate system (in code): right hand, Z-up (Direct3D and mathematical coordinate system).
+
+```plain
+     Z
+  Y  |
     \--X
 ```
