@@ -25,6 +25,14 @@ There are four test songs included in the repo:
 4. You can set the background music properties in `Contents/config/audio_controller.yml`.
 5. You can filter out the plugins that you don't want (e.g. the debug info overlay) by commenting them out (adding a "#" at the start of the line) in `Contents/plugins.yml`. But remember to keep the essential plugins.
 
+Run the app with `--debug` switch to enable debug mode.
+
+**Known issue(s)**:
+
+- Some native Arcaea MP3s contain bad blocks (block sizes are inconsistent). When playing these songs ArcaeaSim will stop working and exit immediately.
+If you turn on the debug mode you will see the MP3 format issue in error log. In this case, you need to convert these MP3 files using other tools
+such as Foobar2000 and Audition, and feed ArcaeaSim with converted MP3 files.
+
 ## Development
 
 *This section is for developers.*
