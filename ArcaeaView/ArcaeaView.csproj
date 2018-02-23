@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\BeatmapLoaderConfig.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Subsystems\Rendering\Camera.cs" />
     <Compile Include="Core\MathF.cs" />
     <Compile Include="Subsystems\Rendering\ColoredBox.cs" />
@@ -157,6 +158,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Contents\res\img\note_hold_dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\note_hold_dark_hi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Contents\res\img\track_dark.png">

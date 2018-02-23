@@ -50,20 +50,21 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
 
             _panelTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/track_dark.png");
             _trackLaneDividerTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/track_lane_divider.png");
-            _finishLineTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/air_input.png");
+            _skyInputTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/air_input.png");
 
             _noteTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/note_dark.png");
             _noteHoldTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/note_hold_dark.png");
+            _noteHoldHighlightedTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/note_hold_dark_hi.png");
 
             var metrics = _stageMetrics;
 
             {
                 _trackRectangle = new TexturedRectangle(game.GraphicsDevice);
-                _trackRectangle.SetVertices(new Vector2(-metrics.HalfTrackFullWidth, -metrics.TrackLength * 0.1f), new Vector2(metrics.TrackFullWidth, metrics.TrackLength * 1.1f), new Color(Color.White, 0.9f));
+                _trackRectangle.SetVerticesXY(new Vector2(-metrics.HalfTrackFullWidth, -metrics.TrackLength * 0.1f), new Vector2(metrics.TrackFullWidth, metrics.TrackLength * 1.1f), new Color(Color.White, 0.9f), 0, 0);
             }
             {
                 _finishLineRectangle = new TexturedRectangle(game.GraphicsDevice);
-                _finishLineRectangle.SetVertices(new Vector2(-metrics.HalfTrackInnerWidth, metrics.FinishLineY - metrics.FinishLineHeight / 2), new Vector2(metrics.TrackInnerWidth, metrics.FinishLineHeight), new Color(Color.MediumPurple, 0.9f), normalizeTextureY: true, z: 0.02f);
+                _finishLineRectangle.SetVerticesXY(new Vector2(-metrics.HalfTrackInnerWidth, metrics.FinishLineY - metrics.FinishLineHeight / 2), new Vector2(metrics.TrackInnerWidth, metrics.FinishLineHeight), new Color(Color.MediumPurple, 0.9f), 0.02f);
             }
             {
                 _laneDividerRectangles = new TexturedRectangle[3];
@@ -72,19 +73,19 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
                     var left = i * metrics.TrackInnerWidth / 4 - metrics.LaneDividerWidth / 2 - metrics.HalfTrackInnerWidth;
                     var origin = new Vector2(left, 0);
                     var size = new Vector2(metrics.LaneDividerWidth, metrics.TrackLength);
-                    _laneDividerRectangles[i - 1].SetVertices(origin, size, new Color(Color.Lavender, 0.9f), normalizeTextureY: true, z: 0.01f);
+                    _laneDividerRectangles[i - 1].SetVerticesXY(origin, size, new Color(Color.Lavender, 0.9f), 0.01f);
                 }
             }
             {
-                _skyInputBox = new ColoredBox(game.GraphicsDevice);
-                _skyInputBox.SetVertices(new Vector3(-metrics.SkyInputWidth / 2, metrics.FinishLineY - metrics.SkyInputHeight / 2, metrics.SkyInputZ - metrics.SkyInputTallness / 2), new Vector3(metrics.SkyInputWidth, metrics.SkyInputHeight, metrics.SkyInputTallness), Color.FromNonPremultiplied(255, 200, 200, 255));
+                _skyInputRectangle = new TexturedRectangle(game.GraphicsDevice);
+                _skyInputRectangle.SetVerticesXZ(new Vector2(-metrics.SkyInputWidth / 2, metrics.SkyInputZ - metrics.SkyInputTallness / 2), new Vector2(metrics.SkyInputWidth, metrics.SkyInputTallness), Color.White, metrics.FinishLineY);
             }
         }
 
         protected override void OnUnloadContents() {
             _beatmap?.Dispose();
 
-            _finishLineTexture?.Dispose();
+            _skyInputTexture?.Dispose();
             _panelTexture?.Dispose();
             _trackLaneDividerTexture?.Dispose();
 
@@ -99,7 +100,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             }
             _finishLineRectangle?.Dispose();
 
-            _skyInputBox?.Dispose();
+            _skyInputRectangle?.Dispose();
 
             _basicEffect?.Dispose();
 
@@ -122,19 +123,21 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             _basicEffect.View = camera.ViewMatrix;
             _basicEffect.Projection = camera.ProjectionMatrix;
 
+            GetTrackParams(out var beatmapTicks, out var currentY);
+
             var graphicsDevice = game.GraphicsDevice;
 
             // Then draw screen elements.
 
-            DrawTrack(graphicsDevice);
+            DrawTrack(graphicsDevice, beatmapTicks, currentY);
             DrawLaneDividers(graphicsDevice);
             DrawFinishLine(graphicsDevice);
-            DrawNotes(graphicsDevice);
-            DrawSkyStop(graphicsDevice);
+            DrawNotes(graphicsDevice, beatmapTicks, currentY);
+            DrawSkyInput(graphicsDevice);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void DrawTrack([NotNull] GraphicsDevice graphicsDevice) {
+        private void DrawTrack([NotNull] GraphicsDevice graphicsDevice, int beatmapTicks, float currentY) {
             graphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -144,6 +147,12 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             _basicEffect.VertexColorEnabled = true;
             _basicEffect.Alpha = 0.9f;
             _basicEffect.Texture = _panelTexture;
+
+            var metrics = _stageMetrics;
+
+            const float offsetZoomScale = 1.0f;
+
+            _trackRectangle.SetVerticesXY(new Vector2(-metrics.HalfTrackFullWidth, -metrics.TrackLength * 0.1f), new Vector2(metrics.TrackFullWidth, metrics.TrackLength * 1.1f), new Color(Color.White, 0.9f), currentY * offsetZoomScale, 0);
 
             _trackRectangle.Draw(_basicEffect.CurrentTechnique);
         }
@@ -158,7 +167,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             _basicEffect.TextureEnabled = true;
             _basicEffect.VertexColorEnabled = false;
             _basicEffect.Alpha = 0.8f;
-            _basicEffect.Texture = _finishLineTexture;
+            _basicEffect.Texture = _skyInputTexture;
 
             _finishLineRectangle.Draw(_basicEffect.CurrentTechnique);
         }
@@ -181,21 +190,63 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void DrawSkyStop([NotNull] GraphicsDevice graphicsDevice) {
+        private void DrawSkyInput([NotNull] GraphicsDevice graphicsDevice) {
             graphicsDevice.RasterizerState = RasterizerState.CullNone;
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.DepthStencilState = DepthEnabled;
 
-            _basicEffect.TextureEnabled = false;
+            _basicEffect.TextureEnabled = true;
             _basicEffect.VertexColorEnabled = true;
             _basicEffect.Alpha = 1f;
-            _basicEffect.Texture = _trackLaneDividerTexture;
+            _basicEffect.Texture = _skyInputTexture;
 
-            _skyInputBox.Draw(_basicEffect.CurrentTechnique);
+            _skyInputRectangle.Draw(_basicEffect.CurrentTechnique);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void DrawNotes([NotNull] GraphicsDevice graphicsDevice) {
+        private void DrawNotes([NotNull] GraphicsDevice graphicsDevice, int beatmapTicks, float currentY) {
+            var beatmap = _beatmap;
+
+            if (beatmap == null) {
+                return;
+            }
+
+            graphicsDevice.RasterizerState = RasterizerState.CullNone;
+            graphicsDevice.BlendState = BlendState.AlphaBlend;
+            graphicsDevice.DepthStencilState = DepthEnabled;
+
+            foreach (var note in beatmap.VisualNotes) {
+                if (note.IsVisible(beatmapTicks, currentY)) {
+                    switch (note.Type) {
+                        case NoteType.Floor: {
+                                var n = (FloorVisualNote)note;
+                                n.SetTexture(_noteTexture);
+                                n.Draw(beatmapTicks, currentY);
+                            }
+                            break;
+                        case NoteType.Long: {
+                                var n = (LongVisualNote)note;
+                                n.SetTextures(_noteHoldTexture, _noteHoldHighlightedTexture);
+                                n.Draw(beatmapTicks, currentY);
+                            }
+                            break;
+                        case NoteType.Arc: {
+                                var n = (ArcVisualNote)note;
+                                n.SetSkyNoteTexture(_noteHoldTexture);
+                                n.Draw(beatmapTicks, currentY);
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+            }
+        }
+
+        private void GetTrackParams(out int beatmapTicks, out float currentY) {
+            beatmapTicks = 0;
+            currentY = 0;
+
             var beatmap = _beatmap;
 
             if (beatmap == null) {
@@ -212,35 +263,10 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
                 return;
             }
 
-            graphicsDevice.RasterizerState = RasterizerState.CullNone;
-            graphicsDevice.BlendState = BlendState.AlphaBlend;
-            graphicsDevice.DepthStencilState = DepthEnabled;
-
             var audioTicks = (int)syncTimer.CurrentTime.TotalMilliseconds;
             var audioOffset = beatmap.BaseBeatmap.AudioOffset;
-            var beatmapTicks = audioTicks - audioOffset;
-            var currentY = beatmap.CalculateY(beatmapTicks, _stageMetrics, 0);
-
-            foreach (var note in beatmap.VisualNotes) {
-                if (note.IsVisible(beatmapTicks, currentY)) {
-                    switch (note.Type) {
-                        case NoteType.Floor:
-                            note.Draw(beatmapTicks, currentY);
-                            break;
-                        case NoteType.Long:
-                            note.Draw(beatmapTicks, currentY);
-                            break;
-                        case NoteType.Arc: {
-                                ((ArcVisualNote)note).SetTexture1(_noteHoldTexture);
-                                ((ArcVisualNote)note).SetTexture2(_noteTexture);
-                                note.Draw(beatmapTicks, currentY);
-                            }
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-            }
+            beatmapTicks = audioTicks - audioOffset;
+            currentY = beatmap.CalculateY(beatmapTicks, _stageMetrics, 0);
         }
 
         private static readonly DepthStencilState DepthEnabled = new DepthStencilState {
@@ -257,15 +283,16 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
 
         private Texture2D _panelTexture;
         private Texture2D _trackLaneDividerTexture;
-        private Texture2D _finishLineTexture;
+        private Texture2D _skyInputTexture;
 
         private Texture2D _noteTexture;
         private Texture2D _noteHoldTexture;
+        private Texture2D _noteHoldHighlightedTexture;
 
         private TexturedRectangle _trackRectangle;
         private TexturedRectangle _finishLineRectangle;
         private TexturedRectangle[] _laneDividerRectangles;
-        private ColoredBox _skyInputBox;
+        private TexturedRectangle _skyInputRectangle;
 
         private BasicEffect _basicEffect;
 

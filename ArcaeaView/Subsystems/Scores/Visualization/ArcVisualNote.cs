@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Moe.Mottomo.ArcaeaSim.Extensions;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Rendering;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Entities;
 
@@ -54,8 +55,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
                     skyNote.SetVertices(bottomNearLeft, skyNoteSize);
 
-                    skyNote.SetTexture1(_texture1);
-                    skyNote.SetTexture2(_texture2);
+                    skyNote.SetTexture(_texture1);
 
                     skyNote.Draw(beatmapTicks, currentY);
                 }
@@ -94,13 +94,16 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             Color color;
             Vector2 arcSectionSize;
+            float alpha;
 
             if (n.IsPlayable) {
-                color = _baseNote.Color == ArcColor.Magenta ? TranslucentRed : TranslucentRoyalBlue;
+                color = _baseNote.Color == ArcColor.Magenta ? DeeperPink : DeeperSkyBlue;
                 arcSectionSize = new Vector2(metrics.PlayableArcWidth, metrics.PlayableArcTallness);
+                alpha = 0.75f;
             } else {
-                color = TranslucentMediumPurple;
+                color = Color.MediumPurple;
                 arcSectionSize = new Vector2(metrics.GuidingArcWidth, metrics.GuidingArcTallness);
+                alpha = 0.2f;
             }
 
             var effect = (BasicEffect)NoteEffects.Effects[(int)n.Type];
@@ -108,7 +111,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             effect.TextureEnabled = false;
             effect.VertexColorEnabled = true;
 
-            DrawArc(effect, start, end, _baseNote.Easing, color, arcSectionSize);
+            DrawArc(effect, start, end, _baseNote.Easing, color, alpha, arcSectionSize);
         }
 
         public override bool IsVisible(int beatmapTicks, float currentY) {
@@ -123,12 +126,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
         public float PreviewEndY { get; }
 
-        public void SetTexture1([NotNull] Texture2D texture) {
+        public void SetSkyNoteTexture([NotNull] Texture2D texture) {
             _texture1 = texture;
-        }
-
-        public void SetTexture2([NotNull] Texture2D texture) {
-            _texture2 = texture;
         }
 
         /// <summary>
@@ -148,8 +147,10 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _hexahedron = null;
         }
 
-        private void DrawArc([NotNull] Effect effect, Vector3 start, Vector3 end, ArcEasing easing, Color color, Vector2 arcSectionSize) {
+        private void DrawArc([NotNull] BasicEffect effect, Vector3 start, Vector3 end, ArcEasing easing, Color color, float alpha, Vector2 arcSectionSize) {
             const int segmentCount = 9;
+
+            effect.Alpha = alpha;
 
             var lastPoint = start;
 
@@ -172,12 +173,10 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             }
         }
 
-        private static readonly Color TranslucentRed = new Color(Color.Red, 0.8f);
-        private static readonly Color TranslucentRoyalBlue = new Color(Color.RoyalBlue, 0.8f);
-        private static readonly Color TranslucentMediumPurple = new Color(Color.MediumPurple, 0.5f);
-
         private Texture2D _texture1;
-        private Texture2D _texture2;
+
+        private static readonly Color DeeperPink = new Color(220, 151, 193).ChangeBrightness(-40);
+        private static readonly Color DeeperSkyBlue = Color.DeepSkyBlue.ChangeBrightness(-80);
 
         private readonly ArcNote _baseNote;
         private readonly StageMetrics _metrics;

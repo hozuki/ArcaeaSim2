@@ -33,14 +33,36 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             }
         }
 
-        public void SetVertices(Vector2 origin, Vector2 size, Color color, bool normalizeTextureY = false, float z = 0) {
-            var textureY = normalizeTextureY ? 1.0f : size.Y;
-
+        public void SetVerticesXY(Vector2 origin, Vector2 size, Color color, float z) {
             var vertices = new[] {
-                new VertexPositionColorTexture {Position = new Vector3(origin.X, origin.Y, z), Color = color, TextureCoordinate = new Vector2(0, textureY)},
-                new VertexPositionColorTexture {Position = new Vector3(origin.X + size.X, origin.Y, z), Color = color, TextureCoordinate = new Vector2(1, textureY)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X, origin.Y, z), Color = color, TextureCoordinate = new Vector2(0, 1)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X + size.X, origin.Y, z), Color = color, TextureCoordinate = new Vector2(1, 1)},
                 new VertexPositionColorTexture {Position = new Vector3(origin.X, origin.Y + size.Y, z), Color = color, TextureCoordinate = new Vector2(0, 0)},
                 new VertexPositionColorTexture {Position = new Vector3(origin.X + size.X, origin.Y + size.Y, z), Color = color, TextureCoordinate = new Vector2(1, 0)}
+            };
+
+            _vertexBuffer.SetData(vertices);
+        }
+
+        public void SetVerticesXZ(Vector2 origin, Vector2 size, Color color, float y) {
+            var vertices = new[] {
+                new VertexPositionColorTexture {Position = new Vector3(origin.X, y, origin.Y), Color = color, TextureCoordinate = new Vector2(0, 1)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X + size.X, y, origin.Y), Color = color, TextureCoordinate = new Vector2(1, 1)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X, y, origin.Y + size.Y), Color = color, TextureCoordinate = new Vector2(0, 0)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X + size.X, y, origin.Y + size.Y), Color = color, TextureCoordinate = new Vector2(1, 0)}
+            };
+
+            _vertexBuffer.SetData(vertices);
+        }
+
+        public void SetVerticesXY(Vector2 origin, Vector2 size, Color color, float textureYOffset, float z) {
+            var y = size.Y + textureYOffset;
+
+            var vertices = new[] {
+                new VertexPositionColorTexture {Position = new Vector3(origin.X, origin.Y, z), Color = color, TextureCoordinate = new Vector2(0, y)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X + size.X, origin.Y, z), Color = color, TextureCoordinate = new Vector2(1, y)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X, origin.Y + size.Y, z), Color = color, TextureCoordinate = new Vector2(0, textureYOffset)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X + size.X, origin.Y + size.Y, z), Color = color, TextureCoordinate = new Vector2(1, textureYOffset)}
             };
 
             _vertexBuffer.SetData(vertices);

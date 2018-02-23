@@ -16,7 +16,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             : base(beatmap, baseNote) {
             _baseNote = baseNote;
             _metrics = metrics;
-            _coloredRectangle = new ColoredRectangle(beatmap.GraphicsDevice);
+            _noteRectangle = new TexturedRectangle(beatmap.GraphicsDevice);
 
             PreviewY = beatmap.CalculateY(baseNote.Tick, metrics, metrics.FinishLineY);
         }
@@ -28,14 +28,18 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             var bottomLeft = new Vector2(left, bottom);
             var size = new Vector2(_metrics.FloorNoteWidth, _metrics.FloorNoteHeight);
 
-            _coloredRectangle.SetVertices(bottomLeft, size, TranslucentViolet, Z);
+            _noteRectangle.SetVerticesXY(bottomLeft, size, Color.White, Z);
 
             var effect = (BasicEffect)NoteEffects.Effects[(int)_baseNote.Type];
 
-            effect.TextureEnabled = false;
+            effect.Alpha = 0.75f;
+
+            effect.TextureEnabled = true;
             effect.VertexColorEnabled = true;
 
-            _coloredRectangle.Draw(effect.CurrentTechnique);
+            effect.Texture = _texture;
+
+            _noteRectangle.Draw(effect.CurrentTechnique);
         }
 
         public override bool IsVisible(int beatmapTicks, float currentY) {
@@ -46,19 +50,24 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             return !(PreviewY < currentY || currentY + _metrics.TrackLength < PreviewY);
         }
 
+        public void SetTexture([NotNull] Texture2D texture) {
+            _texture = texture;
+        }
+
         public float PreviewY { get; }
 
         protected override void Dispose(bool disposing) {
-            _coloredRectangle?.Dispose();
-            _coloredRectangle = null;
+            _noteRectangle?.Dispose();
+            _noteRectangle = null;
         }
 
-        private static readonly Color TranslucentViolet = new Color(Color.Violet, 0.75f);
         private const float Z = 0.04f;
+
+        private Texture2D _texture;
 
         private readonly FloorNote _baseNote;
         private readonly StageMetrics _metrics;
-        private ColoredRectangle _coloredRectangle;
+        private TexturedRectangle _noteRectangle;
 
     }
 }

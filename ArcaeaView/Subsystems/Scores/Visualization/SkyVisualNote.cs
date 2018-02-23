@@ -65,39 +65,36 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         }
 
         public override void Draw(int beatmapTicks, float currentY) {
-            if (!(NoteEffects.Effects[(int)BaseNote.Type] is BasicEffect effect)) {
-                throw new ArgumentException("Sky visual note must use " + nameof(BasicEffect) + ".");
-            }
-
-            var technique = effect.CurrentTechnique;
+            var effect = (BasicEffect)NoteEffects.Effects[(int)BaseNote.Type];
 
             effect.TextureEnabled = true;
             effect.VertexColorEnabled = true;
             effect.Alpha = 1;
 
-            effect.Texture = _texture1;
+            effect.Texture = _texture;
 
             _graphicsDevice.SetVertexBuffer(_vertexBuffer1);
             _graphicsDevice.Indices = _indexBuffer1;
 
-            foreach (var pass in technique.Passes) {
+            foreach (var pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();
                 _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 8);
             }
 
-            effect.Texture = _texture2;
+            effect.Texture = _texture;
 
             _graphicsDevice.SetVertexBuffer(_vertexBuffer2);
             _graphicsDevice.Indices = _indexBuffer2;
 
-            foreach (var pass in technique.Passes) {
+            foreach (var pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();
                 _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4);
             }
         }
 
         public void SetVertices(Vector3 bottomNearLeft, Vector3 size) {
-            var color = TranslucentWhite;
+            // Tint color
+            var color = Color.White;
 
             var vertices1 = new[] {
                 // bottom
@@ -144,12 +141,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _vertexBuffer2.SetData(vertices2);
         }
 
-        public void SetTexture1([NotNull] Texture2D texture) {
-            _texture1 = texture;
-        }
-
-        public void SetTexture2([NotNull] Texture2D texture) {
-            _texture2 = texture;
+        public void SetTexture([NotNull] Texture2D texture) {
+            _texture = texture;
         }
 
         protected override void Dispose(bool disposing) {
@@ -163,11 +156,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _indexBuffer2 = null;
         }
 
-        private static readonly Color TranslucentLightBlue = new Color(Color.LightBlue, 0.4f);
-        private static readonly Color TranslucentWhite = new Color(Color.White, 0.8f);
-
-        private Texture2D _texture1;
-        private Texture2D _texture2;
+        private Texture2D _texture;
 
         private readonly StageMetrics _metrics;
 

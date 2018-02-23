@@ -16,7 +16,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             : base(beatmap, baseNote) {
             _baseNote = baseNote;
             _metrics = metrics;
-            _coloredRectangle = new ColoredRectangle(beatmap.GraphicsDevice);
+            _noteRectangle = new TexturedRectangle(beatmap.GraphicsDevice);
 
             PreviewStartY = beatmap.CalculateY(baseNote.StartTick, metrics, -metrics.FloorNoteHeight / 2 + metrics.FinishLineY);
             PreviewEndY = beatmap.CalculateY(baseNote.EndTick, metrics, -metrics.FloorNoteHeight / 2 + metrics.FinishLineY);
@@ -39,14 +39,21 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             var bottomLeft = new Vector2(left, bottom);
             var size = new Vector2(_metrics.FloorNoteWidth, top - bottom);
 
-            _coloredRectangle.SetVertices(bottomLeft, size, TranslucentWhite, Z);
+            _noteRectangle.SetVerticesXY(bottomLeft, size, Color.White, Z);
 
             var effect = (BasicEffect)NoteEffects.Effects[(int)_baseNote.Type];
 
-            effect.TextureEnabled = false;
+            effect.Alpha = 0.75f;
+
+            effect.TextureEnabled = true;
             effect.VertexColorEnabled = true;
 
-            _coloredRectangle.Draw(effect.CurrentTechnique);
+            var isHighlighted = beatmapTicks >= _baseNote.StartTick;
+            var texture = isHighlighted ? _hightlightedTexture : _texture;
+
+            effect.Texture = texture;
+
+            _noteRectangle.Draw(effect.CurrentTechnique);
         }
 
         public override bool IsVisible(int beatmapTicks, float currentY) {
@@ -57,21 +64,28 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             return !(PreviewEndY < currentY || currentY + _metrics.TrackLength < PreviewStartY);
         }
 
+        public void SetTextures([NotNull] Texture2D texture, [NotNull] Texture2D highlightedTexture) {
+            _texture = texture;
+            _hightlightedTexture = highlightedTexture;
+        }
+
         public float PreviewStartY { get; }
 
         public float PreviewEndY { get; }
 
         protected override void Dispose(bool disposing) {
-            _coloredRectangle?.Dispose();
-            _coloredRectangle = null;
+            _noteRectangle?.Dispose();
+            _noteRectangle = null;
         }
 
-        private static readonly Color TranslucentWhite = new Color(Color.White, 0.75f);
         private const float Z = 0.04f;
+
+        private Texture2D _texture;
+        private Texture2D _hightlightedTexture;
 
         private readonly LongNote _baseNote;
         private readonly StageMetrics _metrics;
-        private ColoredRectangle _coloredRectangle;
+        private TexturedRectangle _noteRectangle;
 
     }
 }

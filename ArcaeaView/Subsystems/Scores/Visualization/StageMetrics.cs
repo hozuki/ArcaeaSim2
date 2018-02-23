@@ -33,9 +33,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             SkyInputZ = 10f;
 
-            SkyInputWidth = TrackInnerWidth * 2.5f;
-            SkyInputHeight = 0.1f;
-            SkyInputTallness = 0.1f;
+            SkyInputWidth = TrackInnerWidth * 1.25f;
+            SkyInputTallness = 0.8f;
 
             PlayableArcWidth = 0.5f;
             PlayableArcTallness = 0.5f;
@@ -132,11 +131,6 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         /// Width of the sky input.
         /// </summary>
         public float SkyInputWidth { get; set; }
-
-        /// <summary>
-        /// Height of the sky input.
-        /// </summary>
-        public float SkyInputHeight { get; set; }
 
         /// <summary>
         /// Tallness of the sky input.
