@@ -25,11 +25,13 @@ There are four test songs included in the repo:
 4. You can set the background music properties in `Contents/config/audio_controller.yml`.
 5. You can filter out the plugins that you don't want (e.g. the debug info overlay) by commenting them out (adding a "#" at the start of the line) in `Contents/plugins.yml`. But remember to keep the essential plugins.
 
-## Building
+## Development
 
 *This section is for developers.*
 
-Please read [Building.md](docs/Building.md).
+Before you start, please read [Starting.md](docs/Starting.md).
+
+For building the solution, please read [Building.md](docs/Building.md).
 
 ## Contributing
 
