@@ -13,6 +13,14 @@ However, neither is it expected to go beyond the line to be a clone of Arcaea.
 
 *This section is for end users, using packaged binaries and resources.*
 
+Like MilliSim, you will need:
+
+
+- Operating System: Windows 7 SP1 or later
+- [.NET Framework 4.5](https://www.microsoft.com/en-us/download/details.aspx?id=42642)
+- [Visual C++ 2015 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=53587)
+- [OpenAL](https://www.openal.org/downloads/)
+
 There are four test songs included in the repo:
 
 | [Grievous Lady](http://lowiro.wikia.com/wiki/Grievous_Lady) | [Metallic Punisher](http://lowiro.wikia.com/wiki/Metallic_Punisher_%28Song%29) | [Red and Blue](http://lowiro.wikia.com/wiki/Red_and_Blue) | [Snow White](http://lowiro.wikia.com/wiki/Snow_White) |
@@ -32,6 +40,8 @@ Run the app with `--debug` switch to enable debug mode.
 - Some native Arcaea MP3s contain bad blocks (block sizes are inconsistent). When playing these songs ArcaeaSim will stop working and exit immediately.
 If you turn on the debug mode you will see the MP3 format issue in error log. In this case, you need to convert these MP3 files using other tools
 such as Foobar2000 and Audition, and feed ArcaeaSim with converted MP3 files.
+- Windows 7 (w/ SP1) may raise [ACM](https://msdn.microsoft.com/en-us/library/windows/desktop/dd742945.aspx) "conversion not possible" exception if you play the MP3 files.
+You can try to convert them to other formats, such as Wave audio files, and modify `audio_controller.yml` to load the converted files.
 
 ## Development
 
