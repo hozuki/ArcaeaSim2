@@ -1,0 +1,8 @@
+﻿metadata:
+  type: Moe.Mottomo.ArcaeaSim.Configuration.BeatmapLoaderConfig
+  assembly_file: ArcaeaView.dll
+  for: component.score.beatmap_loader
+  version: 1 # format version
+data:
+  title: "Grievous Lady"
+  file_path: Contents/game/grievouslady/2.aff
