@@ -71,7 +71,6 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             var technique = effect.CurrentTechnique;
 
-
             effect.TextureEnabled = true;
             effect.VertexColorEnabled = true;
             effect.Alpha = 1;

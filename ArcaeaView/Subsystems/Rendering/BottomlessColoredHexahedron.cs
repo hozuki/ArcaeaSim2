@@ -5,26 +5,29 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
     /// <inheritdoc />
     /// <summary>
+    /// Actually front-less and back-less (LOL).
     /// Uses <see cref="VertexPositionColor" />.
     /// </summary>
-    public sealed class ColoredHexahedron : DrawableGeometryMesh {
+    public sealed class BottomlessColoredHexahedron : DrawableGeometryMesh {
 
-        public ColoredHexahedron([NotNull] GraphicsDevice graphicsDevice) {
+        public BottomlessColoredHexahedron([NotNull] GraphicsDevice graphicsDevice) {
             _graphicsDevice = graphicsDevice;
 
             _vertexBuffer = new VertexBuffer(graphicsDevice, VertexPositionColor.VertexDeclaration, 8, BufferUsage.WriteOnly);
-            _indexBuffer = new IndexBuffer(graphicsDevice, IndexElementSize.SixteenBits, 36, BufferUsage.WriteOnly);
+            _indexBuffer = new IndexBuffer(graphicsDevice, IndexElementSize.SixteenBits, 24, BufferUsage.WriteOnly);
 
             var indices = new ushort[] {
-                0, 1, 2,
-                2, 1, 3,
-                4, 5, 6,
-                6, 5, 7,
+                // No front and back
+                //0, 1, 2,
+                //2, 1, 3,
+                //4, 5, 6,
+                //6, 5, 7,
 
                 0, 1, 4,
                 1, 4, 5,
                 2, 3, 6,
                 3, 6, 7,
+
                 0, 2, 4,
                 2, 4, 6,
                 1, 3, 5,
@@ -40,12 +43,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
 
             foreach (var pass in technique.Passes) {
                 pass.Apply();
-                _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 12);
+                _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 8);
             }
-        }
-
-        public void SetVertices(Vector3 start, Vector3 end, Color color) {
-            SetVertices(start, end, color, Vector2.One);
         }
 
         public void SetVertices(Vector3 start, Vector3 end, Color color, Vector2 sectionSize) {
@@ -54,6 +53,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
                 new VertexPositionColor {Position = new Vector3(start.X + sectionSize.X / 2, start.Y, start.Z - sectionSize.Y / 2), Color = color},
                 new VertexPositionColor {Position = new Vector3(start.X - sectionSize.X / 2, start.Y, start.Z + sectionSize.Y / 2), Color = color},
                 new VertexPositionColor {Position = new Vector3(start.X + sectionSize.X / 2, start.Y, start.Z + sectionSize.Y / 2), Color = color},
+
                 new VertexPositionColor {Position = new Vector3(end.X - sectionSize.X / 2, end.Y, end.Z - sectionSize.Y / 2), Color = color},
                 new VertexPositionColor {Position = new Vector3(end.X + sectionSize.X / 2, end.Y, end.Z - sectionSize.Y / 2), Color = color},
                 new VertexPositionColor {Position = new Vector3(end.X - sectionSize.X / 2, end.Y, end.Z + sectionSize.Y / 2), Color = color},

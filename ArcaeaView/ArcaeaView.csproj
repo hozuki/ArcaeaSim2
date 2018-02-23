@@ -73,16 +73,11 @@
     <Compile Include="Subsystems\Rendering\Camera.cs" />
     <Compile Include="Core\MathF.cs" />
     <Compile Include="Subsystems\Rendering\ColoredBox.cs" />
-    <Compile Include="Subsystems\Rendering\GlassHexahedron.cs" />
+    <Compile Include="Subsystems\Rendering\BottomlessColoredHexahedron.cs" />
     <Compile Include="Subsystems\Rendering\ColoredRectangle.cs" />
     <Compile Include="Subsystems\Rendering\ColoredHexahedron.cs" />
-    <Compile Include="Subsystems\Rendering\GlassBox.cs" />
-    <Compile Include="Subsystems\Rendering\GlassEffect.cs" />
-    <Compile Include="Subsystems\Rendering\PosNormalColor.cs" />
     <Compile Include="Subsystems\Rendering\DrawableGeometryMesh.cs" />
-    <Compile Include="Subsystems\Rendering\PosColor.cs" />
     <Compile Include="Subsystems\Rendering\TexturedRectangle.cs" />
-    <Compile Include="Subsystems\Rendering\VertexColorEffect.cs" />
     <Compile Include="Components\Cameraman.cs" />
     <Compile Include="Components\BeatmapLoaderFactory.cs" />
     <Compile Include="Components\BeatmapLoader.cs" />
@@ -121,19 +116,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Contents\res\fx\compile_effects.bat" />
-    <None Include="Contents\res\fx\glass.fx.dx11.mgfxo">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Contents\res\fx\glass.fx.ogl.mgfxo">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Contents\res\fx\monogame.fxh" />
-    <None Include="Contents\res\fx\vertex_color.fx.dx11.mgfxo">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Contents\res\fx\vertex_color.fx.ogl.mgfxo">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -152,8 +135,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Contents\res\fx\glass.fx" />
-    <Content Include="Contents\res\fx\vertex_color.fx" />
     <Content Include="Contents\res\img\air_input.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

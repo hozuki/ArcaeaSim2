@@ -5,14 +5,14 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
     /// <inheritdoc />
     /// <summary>
-    /// Uses <see cref="PosColor" />.
+    /// Uses <see cref="VertexPositionColor" />.
     /// </summary>
     public sealed class ColoredRectangle : DrawableGeometryMesh {
 
         public ColoredRectangle([NotNull] GraphicsDevice graphicsDevice) {
             _graphicsDevice = graphicsDevice;
 
-            _vertexBuffer = new VertexBuffer(graphicsDevice, PosColor.VertexDeclaration, 4, BufferUsage.WriteOnly);
+            _vertexBuffer = new VertexBuffer(graphicsDevice, VertexPositionColor.VertexDeclaration, 4, BufferUsage.WriteOnly);
             _indexBuffer = new IndexBuffer(graphicsDevice, IndexElementSize.SixteenBits, 6, BufferUsage.WriteOnly);
 
             var indices = new ushort[] {
@@ -34,13 +34,11 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
         }
 
         public void SetVertices(Vector2 bottomLeft, Vector2 size, Color color, float z = 0) {
-            var colorf = color.ToVector4();
-
             var vertices = new[] {
-                new PosColor {Position = new Vector3(bottomLeft.X, bottomLeft.Y, z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomLeft.X + size.X, bottomLeft.Y, z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomLeft.X, bottomLeft.Y + size.Y, z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomLeft.X + size.X, bottomLeft.Y + size.Y, z), Color = colorf}
+                new VertexPositionColor {Position = new Vector3(bottomLeft.X, bottomLeft.Y, z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomLeft.X + size.X, bottomLeft.Y, z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomLeft.X, bottomLeft.Y + size.Y, z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomLeft.X + size.X, bottomLeft.Y + size.Y, z), Color = color}
             };
 
             _vertexBuffer.SetData(vertices);

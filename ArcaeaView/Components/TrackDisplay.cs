@@ -33,17 +33,13 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
 
             var game = Game.ToBaseGame();
 
-            // Note: Effects registered from file by EffectManager do not need to be manually disposed.
-            _vertexColorEffect = game.EffectManager.RegisterSingleton<VertexColorEffect>("Contents/res/fx/vertex_color.fx");
-            _glassEffect = game.EffectManager.RegisterSingleton<GlassEffect>("Contents/res/fx/glass.fx");
-
             _basicEffect = new BasicEffect(game.GraphicsDevice);
             game.EffectManager.RegisterSingleton(_basicEffect);
 
             // Hack: register note effect list
-            NoteEffects.Effects[(int)NoteType.Floor] = _vertexColorEffect;
-            NoteEffects.Effects[(int)NoteType.Long] = _vertexColorEffect;
-            NoteEffects.Effects[(int)NoteType.Arc] = _vertexColorEffect;
+            NoteEffects.Effects[(int)NoteType.Floor] = _basicEffect;
+            NoteEffects.Effects[(int)NoteType.Long] = _basicEffect;
+            NoteEffects.Effects[(int)NoteType.Arc] = _basicEffect;
             NoteEffects.Effects[(int)NoteType.Sky] = _basicEffect;
 
             var beatmap = Game.FindSingleElement<BeatmapLoader>()?.Beatmap;
@@ -120,22 +116,11 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
                 return;
             }
 
-            // First, set the effect parameters for the effects.
-
-            var viewProjection = camera.ViewMatrix * camera.ProjectionMatrix;
-
-            _vertexColorEffect.WorldViewProjection = viewProjection;
+            // First, set the effect parameters for the effects. 
 
             _basicEffect.World = Matrix.Identity;
             _basicEffect.View = camera.ViewMatrix;
             _basicEffect.Projection = camera.ProjectionMatrix;
-
-            _glassEffect.CameraPosition = camera.Position;
-            _glassEffect.EdgeColor = Color.White;
-            _glassEffect.EdgeThickness = 0.01f;
-            _glassEffect.World = Matrix.Identity;
-            _glassEffect.WorldInverse = Matrix.Identity;
-            _glassEffect.WorldViewProjection = viewProjection;
 
             var graphicsDevice = game.GraphicsDevice;
 
@@ -201,7 +186,12 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             graphicsDevice.BlendState = BlendState.AlphaBlend;
             graphicsDevice.DepthStencilState = DepthEnabled;
 
-            _skyInputBox.Draw(_vertexColorEffect.CurrentTechnique);
+            _basicEffect.TextureEnabled = false;
+            _basicEffect.VertexColorEnabled = true;
+            _basicEffect.Alpha = 1f;
+            _basicEffect.Texture = _trackLaneDividerTexture;
+
+            _skyInputBox.Draw(_basicEffect.CurrentTechnique);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -277,9 +267,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
         private TexturedRectangle[] _laneDividerRectangles;
         private ColoredBox _skyInputBox;
 
-        private VertexColorEffect _vertexColorEffect;
         private BasicEffect _basicEffect;
-        private GlassEffect _glassEffect;
 
         private StageMetrics _stageMetrics;
 

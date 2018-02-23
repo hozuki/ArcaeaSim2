@@ -21,7 +21,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             PreviewStartY = beatmap.CalculateY(baseNote.StartTick, metrics, metrics.FinishLineY);
             PreviewEndY = beatmap.CalculateY(baseNote.EndTick, metrics, metrics.FinishLineY);
 
-            _hexahedron = new ColoredHexahedron(beatmap.GraphicsDevice);
+            _hexahedron = new BottomlessColoredHexahedron(beatmap.GraphicsDevice);
 
             if (baseNote.SkyNotes != null && baseNote.SkyNotes.Length > 0) {
                 SkyNotes = baseNote.SkyNotes.Select(n => new SkyVisualNote(beatmap, n, metrics)).ToArray();
@@ -103,10 +103,12 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 arcSectionSize = new Vector2(metrics.GuidingArcWidth, metrics.GuidingArcTallness);
             }
 
-            var effect = NoteEffects.Effects[(int)n.Type];
+            var effect = (BasicEffect)NoteEffects.Effects[(int)n.Type];
 
-            DrawArc(effect.CurrentTechnique, start, end, _baseNote.Easing, color, arcSectionSize);
+            effect.TextureEnabled = false;
+            effect.VertexColorEnabled = true;
 
+            DrawArc(effect, start, end, _baseNote.Easing, color, arcSectionSize);
         }
 
         public override bool IsVisible(int beatmapTicks, float currentY) {
@@ -146,7 +148,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _hexahedron = null;
         }
 
-        private void DrawArc([NotNull] EffectTechnique technique, Vector3 start, Vector3 end, ArcEasing easing, Color color, Vector2 arcSectionSize) {
+        private void DrawArc([NotNull] Effect effect, Vector3 start, Vector3 end, ArcEasing easing, Color color, Vector2 arcSectionSize) {
             const int segmentCount = 9;
 
             var lastPoint = start;
@@ -164,7 +166,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
                 _hexahedron.SetVertices(lastPoint, currentPoint, color, arcSectionSize);
 
-                _hexahedron.Draw(technique);
+                _hexahedron.Draw(effect.CurrentTechnique);
 
                 lastPoint = currentPoint;
             }
@@ -179,7 +181,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
         private readonly ArcNote _baseNote;
         private readonly StageMetrics _metrics;
-        private ColoredHexahedron _hexahedron;
+        private BottomlessColoredHexahedron _hexahedron;
 
     }
 }

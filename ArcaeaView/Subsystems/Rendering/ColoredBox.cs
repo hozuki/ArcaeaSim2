@@ -6,7 +6,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
     /// <inheritdoc />
     /// <summary>
     /// <para>Represents a colored box. A box is defined by its bottom left back corner (near to the X axis) and its size on X, Y and Z axes. Its faces are parallel to the axes.</para>
-    /// <para>Uses vertex format <see cref="PosColor" />.</para>
+    /// <para>Uses vertex format <see cref="VertexPositionColor" />.</para>
     /// </summary>
     public sealed class ColoredBox : DrawableGeometryMesh {
 
@@ -17,7 +17,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
         public ColoredBox([NotNull] GraphicsDevice graphicsDevice) {
             _graphicsDevice = graphicsDevice;
 
-            _vertexBuffer = new VertexBuffer(graphicsDevice, PosColor.VertexDeclaration, 8, BufferUsage.WriteOnly);
+            _vertexBuffer = new VertexBuffer(graphicsDevice, VertexPositionColor.VertexDeclaration, 8, BufferUsage.WriteOnly);
             _indexBuffer = new IndexBuffer(graphicsDevice, IndexElementSize.SixteenBits, 36, BufferUsage.WriteOnly);
 
             var indices = new ushort[] {
@@ -56,17 +56,15 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
         /// <param name="size">Size of this box.</param>
         /// <param name="color">The color of this box.</param>
         public void SetVertices(Vector3 bottomNearLeft, Vector3 size, Color color) {
-            var colorf = color.ToVector4();
-
             var vertices = new[] {
-                new PosColor {Position = new Vector3(bottomNearLeft.X, bottomNearLeft.Y, bottomNearLeft.Z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomNearLeft.X + size.X, bottomNearLeft.Y, bottomNearLeft.Z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomNearLeft.X, bottomNearLeft.Y + size.Y, bottomNearLeft.Z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomNearLeft.X + size.X, bottomNearLeft.Y + size.Y, bottomNearLeft.Z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomNearLeft.X, bottomNearLeft.Y, bottomNearLeft.Z + size.Z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomNearLeft.X + size.X, bottomNearLeft.Y, bottomNearLeft.Z + size.Z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomNearLeft.X, bottomNearLeft.Y + size.Y, bottomNearLeft.Z + size.Z), Color = colorf},
-                new PosColor {Position = new Vector3(bottomNearLeft.X + size.X, bottomNearLeft.Y + size.Y, bottomNearLeft.Z + size.Z), Color = colorf}
+                new VertexPositionColor {Position = new Vector3(bottomNearLeft.X, bottomNearLeft.Y, bottomNearLeft.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomNearLeft.X + size.X, bottomNearLeft.Y, bottomNearLeft.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomNearLeft.X, bottomNearLeft.Y + size.Y, bottomNearLeft.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomNearLeft.X + size.X, bottomNearLeft.Y + size.Y, bottomNearLeft.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomNearLeft.X, bottomNearLeft.Y, bottomNearLeft.Z + size.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomNearLeft.X + size.X, bottomNearLeft.Y, bottomNearLeft.Z + size.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomNearLeft.X, bottomNearLeft.Y + size.Y, bottomNearLeft.Z + size.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(bottomNearLeft.X + size.X, bottomNearLeft.Y + size.Y, bottomNearLeft.Z + size.Z), Color = color}
             };
 
             _vertexBuffer.SetData(vertices);

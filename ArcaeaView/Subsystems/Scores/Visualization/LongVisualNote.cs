@@ -41,7 +41,10 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             _coloredRectangle.SetVertices(bottomLeft, size, TranslucentWhite, Z);
 
-            var effect = NoteEffects.Effects[(int)_baseNote.Type];
+            var effect = (BasicEffect)NoteEffects.Effects[(int)_baseNote.Type];
+
+            effect.TextureEnabled = false;
+            effect.VertexColorEnabled = true;
 
             _coloredRectangle.Draw(effect.CurrentTechnique);
         }
