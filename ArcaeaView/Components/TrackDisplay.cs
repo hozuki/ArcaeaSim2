@@ -1,8 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Rendering;
+using Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Entities;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization;
 using OpenMLTD.MilliSim.Extension.Components.CoreComponents;
 using OpenMLTD.MilliSim.Foundation;
@@ -36,6 +38,13 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             _glassEffect = game.EffectManager.RegisterSingleton<GlassEffect>("Contents/res/fx/glass.fx");
 
             _basicEffect = new BasicEffect(game.GraphicsDevice);
+            game.EffectManager.RegisterSingleton(_basicEffect);
+
+            // Hack: register note effect list
+            NoteEffects.Effects[(int)NoteType.Floor] = _vertexColorEffect;
+            NoteEffects.Effects[(int)NoteType.Long] = _vertexColorEffect;
+            NoteEffects.Effects[(int)NoteType.Arc] = _vertexColorEffect;
+            NoteEffects.Effects[(int)NoteType.Sky] = _basicEffect;
 
             var beatmap = Game.FindSingleElement<BeatmapLoader>()?.Beatmap;
 
@@ -46,6 +55,9 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             _panelTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/track_dark.png");
             _trackLaneDividerTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/track_lane_divider.png");
             _finishLineTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/air_input.png");
+
+            _noteTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/note_dark.png");
+            _noteHoldTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/note_hold_dark.png");
 
             var metrics = _stageMetrics;
 
@@ -79,6 +91,9 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             _finishLineTexture?.Dispose();
             _panelTexture?.Dispose();
             _trackLaneDividerTexture?.Dispose();
+
+            _noteTexture?.Dispose();
+            _noteHoldTexture?.Dispose();
 
             _trackRectangle?.Dispose();
             if (_laneDividerRectangles != null && _laneDividerRectangles.Length > 0) {
@@ -218,7 +233,22 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
 
             foreach (var note in beatmap.VisualNotes) {
                 if (note.IsVisible(beatmapTicks, currentY)) {
-                    note.Draw(_vertexColorEffect, beatmapTicks, currentY);
+                    switch (note.Type) {
+                        case NoteType.Floor:
+                            note.Draw(beatmapTicks, currentY);
+                            break;
+                        case NoteType.Long:
+                            note.Draw(beatmapTicks, currentY);
+                            break;
+                        case NoteType.Arc: {
+                                ((ArcVisualNote)note).SetTexture1(_noteHoldTexture);
+                                ((ArcVisualNote)note).SetTexture2(_noteTexture);
+                                note.Draw(beatmapTicks, currentY);
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                 }
             }
         }
@@ -238,6 +268,9 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
         private Texture2D _panelTexture;
         private Texture2D _trackLaneDividerTexture;
         private Texture2D _finishLineTexture;
+
+        private Texture2D _noteTexture;
+        private Texture2D _noteHoldTexture;
 
         private TexturedRectangle _trackRectangle;
         private TexturedRectangle _finishLineRectangle;

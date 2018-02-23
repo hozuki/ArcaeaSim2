@@ -6,7 +6,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
     /// <inheritdoc />
     /// <summary>
     /// <para>Represents a colored box. A box is defined by its bottom left back corner (near to the X axis) and its size on X, Y and Z axes. Its faces are parallel to the axes.</para>
-    /// <para>Uses vertex format <see cref="T:Moe.Mottomo.ArcaeaSim.Subsystems.Rendering.PosColor" />.</para>
+    /// <para>Uses vertex format <see cref="PosColor" />.</para>
     /// </summary>
     public sealed class ColoredBox : DrawableGeometryMesh {
 

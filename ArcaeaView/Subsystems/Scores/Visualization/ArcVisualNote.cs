@@ -28,7 +28,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             }
         }
 
-        public override void Draw(Effect effect, int beatmapTicks, float currentY) {
+        public override void Draw(int beatmapTicks, float currentY) {
             var metrics = _metrics;
             var skyNotes = SkyNotes;
             var n = _baseNote;
@@ -41,7 +41,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                         continue;
                     }
 
-                    var ratio = (float)(skyNote.BaseNote.Tick - n.StartTick) / (n.EndTick - n.StartTick);
+                    var ratio = (float)(((SkyNote)skyNote.BaseNote).Tick - n.StartTick) / (n.EndTick - n.StartTick);
 
                     var xRatio = MathHelper.Lerp(n.StartX, n.EndX, ratio);
                     var yRatio = MathHelper.Lerp(n.StartY, n.EndY, ratio);
@@ -54,7 +54,10 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
                     skyNote.SetVertices(bottomNearLeft, skyNoteSize);
 
-                    skyNote.Draw(effect, beatmapTicks, currentY);
+                    skyNote.SetTexture1(_texture1);
+                    skyNote.SetTexture2(_texture2);
+
+                    skyNote.Draw(beatmapTicks, currentY);
                 }
             }
 
@@ -100,6 +103,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 arcSectionSize = new Vector2(metrics.GuidingArcWidth, metrics.GuidingArcTallness);
             }
 
+            var effect = NoteEffects.Effects[(int)n.Type];
+
             DrawArc(effect.CurrentTechnique, start, end, _baseNote.Easing, color, arcSectionSize);
 
         }
@@ -115,6 +120,14 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         public float PreviewStartY { get; }
 
         public float PreviewEndY { get; }
+
+        public void SetTexture1([NotNull] Texture2D texture) {
+            _texture1 = texture;
+        }
+
+        public void SetTexture2([NotNull] Texture2D texture) {
+            _texture2 = texture;
+        }
 
         /// <summary>
         /// Gets the <see cref="SkyNote"/>s associated with this note.
@@ -160,6 +173,9 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         private static readonly Color TranslucentRed = new Color(Color.Red, 0.8f);
         private static readonly Color TranslucentRoyalBlue = new Color(Color.RoyalBlue, 0.8f);
         private static readonly Color TranslucentMediumPurple = new Color(Color.MediumPurple, 0.5f);
+
+        private Texture2D _texture1;
+        private Texture2D _texture2;
 
         private readonly ArcNote _baseNote;
         private readonly StageMetrics _metrics;

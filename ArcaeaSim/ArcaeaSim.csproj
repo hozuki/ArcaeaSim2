@@ -138,6 +138,9 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Contents\Content.mgcb" />
+    <None Include="ArcaeaSim %28Debug%29.cmd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
     <None Include="app.manifest" />
     <None Include="Contents\app.config.yml">

@@ -22,7 +22,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             PreviewEndY = beatmap.CalculateY(baseNote.EndTick, metrics, -metrics.FloorNoteHeight / 2 + metrics.FinishLineY);
         }
 
-        public override void Draw(Effect effect, int beatmapTicks, float currentY) {
+        public override void Draw(int beatmapTicks, float currentY) {
             var left = ((int)_baseNote.Track - 1) * _metrics.TrackInnerWidth / 4 - _metrics.HalfTrackInnerWidth;
             var bottom = PreviewStartY - currentY;
 
@@ -40,6 +40,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             var size = new Vector2(_metrics.FloorNoteWidth, top - bottom);
 
             _coloredRectangle.SetVertices(bottomLeft, size, TranslucentWhite, Z);
+
+            var effect = NoteEffects.Effects[(int)_baseNote.Type];
 
             _coloredRectangle.Draw(effect.CurrentTechnique);
         }

@@ -7,19 +7,24 @@
         /// <summary>
         /// A floor note. It appears at the bottom of the game area. It should be tapped.
         /// </summary>
-        Floor,
+        Floor = 0,
         /// <summary>
         /// A long note. It appears at the bottom of the game area. It should be pressed on start tick and released on end tick.
         /// </summary>
-        Long,
+        Long = 1,
         /// <summary>
         /// An arc note. The complicated and special note type of Arcaea.
         /// </summary>
-        Arc,
+        Arc = 2,
         /// <summary>
         /// A timing note. It changes the tempo (BPM) information.
         /// </summary>
-        Timing
+        Timing = 3,
+        /// <summary>
+        /// A sky note.
+        /// </summary>
+        Sky = 4,
+        Max = 4
 
     }
 }

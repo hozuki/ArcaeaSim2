@@ -32,7 +32,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         /// </summary>
         public NoteType Type { get; }
 
-        public abstract void Draw(Effect effect, int beatmapTicks, float currentY);
+        public abstract void Draw(int beatmapTicks, float currentY);
 
         public abstract bool IsVisible(int beatmapTicks, float currentY);
 

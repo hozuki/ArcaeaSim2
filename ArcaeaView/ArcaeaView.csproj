@@ -107,6 +107,7 @@
     <Compile Include="Subsystems\Scores\Entities\ArcEasing.cs" />
     <Compile Include="Subsystems\Scores\Visualization\ArcEasingHelper.cs" />
     <Compile Include="Subsystems\Scores\Visualization\IDrawableNote.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\NoteEffects.cs" />
     <Compile Include="Subsystems\Scores\Visualization\SkyVisualNote.cs" />
     <Compile Include="Subsystems\Scores\Visualization\ArcVisualNote.cs" />
     <Compile Include="Subsystems\Scores\Visualization\LongVisualNote.cs" />
