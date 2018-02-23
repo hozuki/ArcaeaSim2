@@ -25,7 +25,7 @@ There are four test songs included in the repo:
 
 | [Grievous Lady](http://lowiro.wikia.com/wiki/Grievous_Lady) | [Metallic Punisher](http://lowiro.wikia.com/wiki/Metallic_Punisher_%28Song%29) | [Red and Blue](http://lowiro.wikia.com/wiki/Red_and_Blue) | [Snow White](http://lowiro.wikia.com/wiki/Snow_White) |
 |---|---|---|---|
-| <img src="ArcaeaSim/Contents/game/grievouslady/base_256.jpg" width="128" /> | <img src="ArcaeaSim/Contents/game/metallicpunisher/base_256.jpg" width="128" /> | <img src="ArcaeaSim/Contents/game/redandblue/base_256.jpg" width="128" /> | <img src="ArcaeaSim/Contents/game/snowwhite/base.jpg" width="128" /> |
+| <img src="ArcaeaSim/Contents/game/grievouslady/base_256.jpg" width="128" /> | <img src="ArcaeaSim/Contents/game/metallicpunisher/base_256.jpg" width="128" /> | <img src="ArcaeaSim/Contents/game/redandblue/base_256.jpg" width="128" /> | <img src="ArcaeaSim/Contents/game/snowwhite/base_256.jpg" width="128" /> |
 
 1. You can set the window properties (e.g. window size) in `Contents/app.config.yml`.
 2. You can set the background image properties in `Contents/config/background_image.yml`.
