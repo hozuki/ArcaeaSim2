@@ -21,7 +21,7 @@
         /// </summary>
         Timing = 3,
         /// <summary>
-        /// A sky note.
+        /// A sky note. It does not appear in the beatmap. This value is only for convenience of development.
         /// </summary>
         Sky = 4,
         Max = 4

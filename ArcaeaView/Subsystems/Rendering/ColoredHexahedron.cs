@@ -44,11 +44,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             }
         }
 
-        public void SetVertices(Vector3 start, Vector3 end, Color color) {
-            SetVertices(start, end, color, Vector2.One);
-        }
-
-        public void SetVertices(Vector3 start, Vector3 end, Color color, Vector2 sectionSize) {
+        public void SetVerticesXY(Vector3 start, Vector3 end, Color color, Vector2 sectionSize) {
             var vertices = new[] {
                 new VertexPositionColor {Position = new Vector3(start.X - sectionSize.X / 2, start.Y, start.Z - sectionSize.Y / 2), Color = color},
                 new VertexPositionColor {Position = new Vector3(start.X + sectionSize.X / 2, start.Y, start.Z - sectionSize.Y / 2), Color = color},
@@ -58,6 +54,21 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
                 new VertexPositionColor {Position = new Vector3(end.X + sectionSize.X / 2, end.Y, end.Z - sectionSize.Y / 2), Color = color},
                 new VertexPositionColor {Position = new Vector3(end.X - sectionSize.X / 2, end.Y, end.Z + sectionSize.Y / 2), Color = color},
                 new VertexPositionColor {Position = new Vector3(end.X + sectionSize.X / 2, end.Y, end.Z + sectionSize.Y / 2), Color = color}
+            };
+
+            _vertexBuffer.SetData(vertices);
+        }
+
+        public void SetVerticesXZ(Vector3 start, Vector3 end, Color color, Vector2 sectionSize) {
+            var vertices = new[] {
+                new VertexPositionColor {Position = new Vector3(start.X - sectionSize.X / 2, start.Y - sectionSize.Y / 2, start.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(start.X + sectionSize.X / 2, start.Y - sectionSize.Y / 2, start.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(start.X - sectionSize.X / 2, start.Y + sectionSize.Y / 2, start.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(start.X + sectionSize.X / 2, start.Y + sectionSize.Y / 2, start.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(end.X - sectionSize.X / 2, end.Y - sectionSize.Y / 2, end.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(end.X + sectionSize.X / 2, end.Y - sectionSize.Y / 2, end.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(end.X - sectionSize.X / 2, end.Y + sectionSize.Y / 2, end.Z), Color = color},
+                new VertexPositionColor {Position = new Vector3(end.X + sectionSize.X / 2, end.Y + sectionSize.Y / 2, end.Z), Color = color}
             };
 
             _vertexBuffer.SetData(vertices);

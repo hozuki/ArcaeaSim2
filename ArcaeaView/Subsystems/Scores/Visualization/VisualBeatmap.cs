@@ -24,7 +24,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             Timings = baseBeatmap.Notes.Where(n => n.Type == NoteType.Timing).Cast<TimingNote>().ToArray();
 
-            VisualNotes = baseBeatmap.Notes.Where(n => n.Type != NoteType.Timing).Select<NoteBase, VisualNoteBase>(n => {
+            var visualNotes = baseBeatmap.Notes.Where(n => n.Type != NoteType.Timing).Select<NoteBase, VisualNoteBase>(n => {
                 switch (n.Type) {
                     case NoteType.Floor:
                         return new FloorVisualNote(this, (FloorNote)n, metrics);
@@ -36,6 +36,42 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                         throw new ArgumentOutOfRangeException();
                 }
             }).ToArray();
+
+            VisualNotes = visualNotes;
+
+            // Scan sync sky notes and add lines between the floor note and sky note.
+            // Credits: @money, @RW, @JDF, @L-F0rce
+
+            var allArcVisualNotes = visualNotes.Where(note => note.Type == NoteType.Arc).Cast<ArcVisualNote>().ToArray();
+
+            for (var i = 0; i < visualNotes.Length; ++i) {
+                var visualNote = visualNotes[i];
+
+                if (visualNote.Type != NoteType.Floor || i >= visualNotes.Length - 1) {
+                    continue;
+                }
+
+                var n = (FloorVisualNote)visualNote;
+                var floorBase = (FloorNote)n.BaseNote;
+
+                // TODO: Naive method. Should be optimized.
+                foreach (var arcVisualNote in allArcVisualNotes) {
+                    if (arcVisualNote.SkyVisualNotes == null || arcVisualNote.SkyVisualNotes.Length == 0) {
+                        continue;
+                    }
+
+                    foreach (var skyVisualNote in arcVisualNote.SkyVisualNotes) {
+                        if (((SkyNote)skyVisualNote.BaseNote).Tick == floorBase.Tick) {
+                            n.SynchronizedSkyVisualNote = skyVisualNote;
+                            break;
+                        }
+                    }
+
+                    if (n.SynchronizedSkyVisualNote != null) {
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>

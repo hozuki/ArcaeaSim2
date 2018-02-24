@@ -13,9 +13,12 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
     /// </summary>
     public sealed class SkyVisualNote : VisualNoteBase, IPreviewNote {
 
-        public SkyVisualNote([NotNull] VisualBeatmap beatmap, [NotNull] SkyNote baseNote, [NotNull] StageMetrics metrics)
+        public SkyVisualNote([NotNull] VisualBeatmap beatmap, [NotNull] SkyNote baseNote, [NotNull] ArcVisualNote parent, [NotNull] StageMetrics metrics)
         : base(beatmap, baseNote) {
             _metrics = metrics;
+
+            Parent = parent;
+
             PreviewY = beatmap.CalculateY(baseNote.Tick, metrics, metrics.FinishLineY);
 
             var graphicsDevice = beatmap.GraphicsDevice;
@@ -54,6 +57,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             _shadowRectangle = new ColoredRectangle(graphicsDevice);
         }
+
+        public ArcVisualNote Parent { get; }
 
         public float PreviewY { get; }
 

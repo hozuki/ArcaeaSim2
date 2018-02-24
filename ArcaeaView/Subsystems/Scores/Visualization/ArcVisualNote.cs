@@ -26,13 +26,13 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _shadowRectangle = new ColoredParallelogram(beatmap.GraphicsDevice);
 
             if (baseNote.SkyNotes != null && baseNote.SkyNotes.Length > 0) {
-                SkyNotes = baseNote.SkyNotes.Select(n => new SkyVisualNote(beatmap, n, metrics)).ToArray();
+                SkyVisualNotes = baseNote.SkyNotes.Select(n => new SkyVisualNote(beatmap, n, this, metrics)).ToArray();
             }
         }
 
         public override void Draw(int beatmapTicks, float currentY) {
             var metrics = _metrics;
-            var skyNotes = SkyNotes;
+            var skyNotes = SkyVisualNotes;
             var n = _baseNote;
 
             if (skyNotes?.Length > 0) {
@@ -135,11 +135,11 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         /// Gets the <see cref="SkyNote"/>s associated with this note.
         /// </summary>
         [CanBeNull]
-        private SkyVisualNote[] SkyNotes { get; }
+        public SkyVisualNote[] SkyVisualNotes { get; }
 
         protected override void Dispose(bool disposing) {
-            if (SkyNotes != null) {
-                foreach (var skyNote in SkyNotes) {
+            if (SkyVisualNotes != null) {
+                foreach (var skyNote in SkyVisualNotes) {
                     skyNote.Dispose();
                 }
             }
