@@ -1,7 +1,8 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Moe.Mottomo.ArcaeaSim.Extensions;
+using Moe.Mottomo.ArcaeaSim.Subsystems.Rendering;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Entities;
 
 namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
@@ -50,6 +51,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             };
 
             _indexBuffer2.SetData(indices2);
+
+            _shadowRectangle = new ColoredRectangle(graphicsDevice);
         }
 
         public float PreviewY { get; }
@@ -90,6 +93,13 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 pass.Apply();
                 _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4);
             }
+
+            // Cast shadow
+            effect.TextureEnabled = false;
+            effect.VertexColorEnabled = true;
+            effect.Alpha = 0.1f;
+
+            _shadowRectangle.Draw(effect.CurrentTechnique);
         }
 
         public void SetVertices(Vector3 bottomNearLeft, Vector3 size) {
@@ -139,6 +149,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             };
 
             _vertexBuffer2.SetData(vertices2);
+
+            _shadowRectangle.SetVerticesXY(bottomNearLeft.XY(), size.XY(), Color.White, ShadowZ);
         }
 
         public void SetTexture([NotNull] Texture2D texture) {
@@ -154,7 +166,12 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _indexBuffer1 = null;
             _vertexBuffer2 = null;
             _indexBuffer2 = null;
+
+            _shadowRectangle?.Dispose();
+            _shadowRectangle = null;
         }
+
+        private const float ShadowZ = 0.01f;
 
         private Texture2D _texture;
 
@@ -165,6 +182,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         private IndexBuffer _indexBuffer1;
         private VertexBuffer _vertexBuffer2;
         private IndexBuffer _indexBuffer2;
+
+        private ColoredRectangle _shadowRectangle;
 
     }
 }

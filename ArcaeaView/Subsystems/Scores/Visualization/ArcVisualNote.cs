@@ -23,6 +23,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             PreviewEndY = beatmap.CalculateY(baseNote.EndTick, metrics, metrics.FinishLineY);
 
             _hexahedron = new BottomlessColoredHexahedron(beatmap.GraphicsDevice);
+            _shadowRectangle = new ColoredParallelogram(beatmap.GraphicsDevice);
 
             if (baseNote.SkyNotes != null && baseNote.SkyNotes.Length > 0) {
                 SkyNotes = baseNote.SkyNotes.Select(n => new SkyVisualNote(beatmap, n, metrics)).ToArray();
@@ -95,23 +96,23 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             Color color;
             Vector2 arcSectionSize;
             float alpha;
+            bool castShadow;
 
             if (n.IsPlayable) {
                 color = _baseNote.Color == ArcColor.Magenta ? DeeperPink : DeeperSkyBlue;
                 arcSectionSize = new Vector2(metrics.PlayableArcWidth, metrics.PlayableArcTallness);
                 alpha = 0.75f;
+                castShadow = true;
             } else {
                 color = Color.MediumPurple;
                 arcSectionSize = new Vector2(metrics.GuidingArcWidth, metrics.GuidingArcTallness);
                 alpha = 0.2f;
+                castShadow = false;
             }
 
             var effect = (BasicEffect)NoteEffects.Effects[(int)n.Type];
 
-            effect.TextureEnabled = false;
-            effect.VertexColorEnabled = true;
-
-            DrawArc(effect, start, end, _baseNote.Easing, color, alpha, arcSectionSize);
+            DrawArc(effect, start, end, _baseNote.Easing, color, alpha, arcSectionSize, castShadow);
         }
 
         public override bool IsVisible(int beatmapTicks, float currentY) {
@@ -145,12 +146,13 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             _hexahedron?.Dispose();
             _hexahedron = null;
+
+            _shadowRectangle?.Dispose();
+            _shadowRectangle = null;
         }
 
-        private void DrawArc([NotNull] BasicEffect effect, Vector3 start, Vector3 end, ArcEasing easing, Color color, float alpha, Vector2 arcSectionSize) {
+        private void DrawArc([NotNull] BasicEffect effect, Vector3 start, Vector3 end, ArcEasing easing, Color color, float alpha, Vector2 arcSectionSize, bool castShadow) {
             const int segmentCount = 9;
-
-            effect.Alpha = alpha;
 
             var lastPoint = start;
 
@@ -167,11 +169,30 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
                 _hexahedron.SetVertices(lastPoint, currentPoint, color, arcSectionSize);
 
+                effect.TextureEnabled = false;
+                effect.VertexColorEnabled = true;
+
+                effect.Alpha = alpha;
+
                 _hexahedron.Draw(effect.CurrentTechnique);
 
+                if (castShadow) {
+                    _shadowRectangle.SetVerticesXY(lastPoint.XY(), currentPoint.XY(), arcSectionSize.X, Color.White, ShadowZ);
+
+                    effect.TextureEnabled = false;
+                    effect.VertexColorEnabled = true;
+
+                    effect.Alpha = 0.1f;
+
+                    _shadowRectangle.Draw(effect.CurrentTechnique);
+                }
+
+                // Update the point.
                 lastPoint = currentPoint;
             }
         }
+
+        private const float ShadowZ = 0.01f;
 
         private Texture2D _texture1;
 
@@ -181,6 +202,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         private readonly ArcNote _baseNote;
         private readonly StageMetrics _metrics;
         private BottomlessColoredHexahedron _hexahedron;
+        private ColoredParallelogram _shadowRectangle;
 
     }
 }

@@ -1,15 +1,16 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Moe.Mottomo.ArcaeaSim.Core;
 
 namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
     /// <inheritdoc />
     /// <summary>
     /// Uses <see cref="VertexPositionColor" />.
     /// </summary>
-    public sealed class ColoredRectangle : DrawableGeometryMesh {
+    public sealed class ColoredParallelogram : DrawableGeometryMesh {
 
-        public ColoredRectangle([NotNull] GraphicsDevice graphicsDevice) {
+        public ColoredParallelogram([NotNull] GraphicsDevice graphicsDevice) {
             _graphicsDevice = graphicsDevice;
 
             _vertexBuffer = new VertexBuffer(graphicsDevice, VertexPositionColor.VertexDeclaration, 4, BufferUsage.WriteOnly);
@@ -33,12 +34,16 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             }
         }
 
-        public void SetVerticesXY(Vector2 bottomLeft, Vector2 size, Color color, float z = 0) {
+        public void SetVerticesXY(Vector2 start, Vector2 end, float width, Color color, float z = 0) {
+            var angle = MathF.Atan2(end.Y - start.Y, end.X - start.X);
+            var dx = width / 2 * MathF.Sin(angle);
+            var dy = width / 2 * MathF.Cos(angle);
+
             var vertices = new[] {
-                new VertexPositionColor {Position = new Vector3(bottomLeft.X, bottomLeft.Y, z), Color = color},
-                new VertexPositionColor {Position = new Vector3(bottomLeft.X + size.X, bottomLeft.Y, z), Color = color},
-                new VertexPositionColor {Position = new Vector3(bottomLeft.X, bottomLeft.Y + size.Y, z), Color = color},
-                new VertexPositionColor {Position = new Vector3(bottomLeft.X + size.X, bottomLeft.Y + size.Y, z), Color = color}
+                new VertexPositionColor {Position = new Vector3(start.X - dx, start.Y - dy, z), Color = color},
+                new VertexPositionColor {Position = new Vector3(start.X + dx, start.Y + dy, z), Color = color},
+                new VertexPositionColor {Position = new Vector3(end.X - dx, end.Y - dy, z), Color = color},
+                new VertexPositionColor {Position = new Vector3(end.X + dx, end.Y + dy, z), Color = color}
             };
 
             _vertexBuffer.SetData(vertices);

@@ -71,10 +71,12 @@
   <ItemGroup>
     <Compile Include="Configuration\BeatmapLoaderConfig.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\Vector3Extensions.cs" />
     <Compile Include="Subsystems\Rendering\Camera.cs" />
     <Compile Include="Core\MathF.cs" />
     <Compile Include="Subsystems\Rendering\ColoredBox.cs" />
     <Compile Include="Subsystems\Rendering\BottomlessColoredHexahedron.cs" />
+    <Compile Include="Subsystems\Rendering\ColoredParallelogram.cs" />
     <Compile Include="Subsystems\Rendering\ColoredRectangle.cs" />
     <Compile Include="Subsystems\Rendering\ColoredHexahedron.cs" />
     <Compile Include="Subsystems\Rendering\DrawableGeometryMesh.cs" />

@@ -36,11 +36,11 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             SkyInputWidth = TrackInnerWidth * 1.25f;
             SkyInputTallness = 0.8f;
 
-            PlayableArcWidth = 0.5f;
-            PlayableArcTallness = 0.5f;
+            PlayableArcWidth = 1f;
+            PlayableArcTallness = 1f;
 
-            GuidingArcWidth = PlayableArcWidth * 0.4f;
-            GuidingArcTallness = PlayableArcTallness * 0.4f;
+            GuidingArcWidth = PlayableArcWidth * 0.25f;
+            GuidingArcTallness = PlayableArcTallness * 0.25f;
 
             PastTickThreshold = 0;
             FutureTickThreshold = 4000;
