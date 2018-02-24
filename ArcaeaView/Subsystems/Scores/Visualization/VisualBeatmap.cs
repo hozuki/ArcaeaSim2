@@ -72,6 +72,25 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                     }
                 }
             }
+
+            // "Supports"
+            foreach (var arcVisualNote in allArcVisualNotes) {
+                var n = (ArcNote)arcVisualNote.BaseNote;
+
+                var ancestor = allArcVisualNotes.FirstOrDefault(note => {
+                    var anotherArcNote = (ArcNote)note.BaseNote;
+                    return anotherArcNote.EndTick == n.StartTick && anotherArcNote.IsPlayable && anotherArcNote.Color == n.Color;
+                });
+
+                if (ancestor == null) {
+                    arcVisualNote.ShouldDrawSupport = true;
+                    continue;
+                }
+
+                if (!((ArcNote)ancestor.BaseNote).StartY.Equals(((ArcNote)ancestor.BaseNote).EndY)) {
+                    arcVisualNote.ShouldDrawSupport = true;
+                }
+            }
         }
 
         /// <summary>

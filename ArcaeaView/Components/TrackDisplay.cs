@@ -233,6 +233,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
                         case NoteType.Arc: {
                                 var n = (ArcVisualNote)note;
                                 n.SetSkyNoteTexture(_noteHoldTexture);
+                                n.SetSupportTexture(_skyInputTexture);
                                 n.Draw(beatmapTicks, currentY);
                             }
                             break;

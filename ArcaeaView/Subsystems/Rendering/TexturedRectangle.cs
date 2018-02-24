@@ -68,6 +68,18 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             _vertexBuffer.SetData(vertices);
         }
 
+        // Rotated, counterclockwise, 90deg
+        public void SetVerticesXZTextureRotated(Vector2 origin, Vector2 size, Color color, float y) {
+            var vertices = new[] {
+                new VertexPositionColorTexture {Position = new Vector3(origin.X, y, origin.Y), Color = color, TextureCoordinate = new Vector2(0, 0)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X + size.X, y, origin.Y), Color = color, TextureCoordinate = new Vector2(0, 1)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X, y, origin.Y + size.Y), Color = color, TextureCoordinate = new Vector2(1, 0)},
+                new VertexPositionColorTexture {Position = new Vector3(origin.X + size.X, y, origin.Y + size.Y), Color = color, TextureCoordinate = new Vector2(1, 1)}
+            };
+
+            _vertexBuffer.SetData(vertices);
+        }
+
         protected override void Dispose(bool disposing) {
             _vertexBuffer.Dispose();
             _indexBuffer.Dispose();

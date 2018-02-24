@@ -106,6 +106,11 @@ namespace Moe.Mottomo.ArcaeaSim {
                             camera?.Reset();
                         }
                         break;
+                    case Keys.F6: {
+                            var audioController = this.FindSingleElement<AudioController>();
+                            audioController?.Music?.Source?.Stop();
+                        }
+                        break;
                 }
             };
 
