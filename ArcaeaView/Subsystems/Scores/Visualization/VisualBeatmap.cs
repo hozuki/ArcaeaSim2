@@ -84,6 +84,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
                 if (ancestor == null) {
                     arcVisualNote.ShouldDrawSupport = true;
+                    arcVisualNote.ShouldDrawHeader = true;
                     continue;
                 }
 

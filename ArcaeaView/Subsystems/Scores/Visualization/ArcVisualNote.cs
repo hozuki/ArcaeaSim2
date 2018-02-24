@@ -25,7 +25,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _arcMesh = new BottomlessColoredTriangularPrism(beatmap.GraphicsDevice);
             _shadow = new ColoredParallelogram(beatmap.GraphicsDevice);
             _support = new TexturedRectangle(beatmap.GraphicsDevice);
-
+            _header = new BottomlessColoredTetrahedron(beatmap.GraphicsDevice);
 
             if (baseNote.SkyNotes != null && baseNote.SkyNotes.Length > 0) {
                 SkyVisualNotes = baseNote.SkyNotes.Select(n => new SkyVisualNote(beatmap, n, this, metrics)).ToArray();
@@ -117,19 +117,32 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             DrawArc(effect, segmentCount, start, end, _baseNote.Easing, arcColor, alpha, arcSectionSize, castShadow);
 
-            if (n.IsPlayable && ShouldDrawSupport && startZ > 0 && beatmapTicks <= n.StartTick) {
-                var supportBottom = new Vector2(startX - metrics.PlayableArcWidth / 2, 0);
-                var supportSize = new Vector2(metrics.PlayableArcWidth, startZ);
+            if (n.IsPlayable) {
+                if (ShouldDrawHeader && beatmapTicks <= n.StartTick) {
+                    _header.SetVerticesXZ(start, arcColor, arcSectionSize.X);
 
-                _support.SetVerticesXZTextureRotated(supportBottom, supportSize, arcColor, startY);
+                    effect.TextureEnabled = false;
+                    effect.VertexColorEnabled = true;
 
-                effect.TextureEnabled = true;
-                effect.VertexColorEnabled = true;
+                    effect.Alpha = alpha;
 
-                effect.Alpha = 0.8f;
-                effect.Texture = _supportTexture;
+                    _header.Draw(effect.CurrentTechnique);
+                }
 
-                _support.Draw(effect.CurrentTechnique);
+                if (ShouldDrawSupport && startZ > 0 && beatmapTicks <= n.StartTick) {
+                    var supportBottom = new Vector2(startX - metrics.PlayableArcWidth / 2, 0);
+                    var supportSize = new Vector2(metrics.PlayableArcWidth, startZ);
+
+                    _support.SetVerticesXZTextureRotated(supportBottom, supportSize, arcColor, startY);
+
+                    effect.TextureEnabled = true;
+                    effect.VertexColorEnabled = true;
+
+                    effect.Alpha = 0.8f;
+                    effect.Texture = _supportTexture;
+
+                    _support.Draw(effect.CurrentTechnique);
+                }
             }
         }
 
@@ -146,6 +159,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         public float PreviewEndY { get; }
 
         public bool ShouldDrawSupport { get; internal set; }
+
+        public bool ShouldDrawHeader { get; internal set; }
 
         public void SetSkyNoteTexture([NotNull] Texture2D texture) {
             _skyVisualNoteTexture = texture;
@@ -176,6 +191,9 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             _support?.Dispose();
             _support = null;
+
+            _header?.Dispose();
+            _header = null;
         }
 
         private void DrawArc([NotNull] BasicEffect effect, int segmentCount, Vector3 start, Vector3 end, ArcEasing easing, Color color, float alpha, Vector2 arcSectionSize, bool castShadow) {
@@ -231,6 +249,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         private BottomlessColoredTriangularPrism _arcMesh;
         private ColoredParallelogram _shadow;
         private TexturedRectangle _support;
+        private BottomlessColoredTetrahedron _header;
 
     }
 }
