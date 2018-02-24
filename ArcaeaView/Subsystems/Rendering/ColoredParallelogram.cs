@@ -49,6 +49,19 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             _vertexBuffer.SetData(vertices);
         }
 
+        public void SetVerticesXYParallel(Vector2 start, Vector2 end, float width, Color color, float z = 0) {
+            var halfWidth = width / 2;
+
+            var vertices = new[] {
+                new VertexPositionColor {Position = new Vector3(start.X - halfWidth, start.Y, z), Color = color},
+                new VertexPositionColor {Position = new Vector3(start.X + halfWidth, start.Y, z), Color = color},
+                new VertexPositionColor {Position = new Vector3(end.X - halfWidth, end.Y, z), Color = color},
+                new VertexPositionColor {Position = new Vector3(end.X + halfWidth, end.Y, z), Color = color}
+            };
+
+            _vertexBuffer.SetData(vertices);
+        }
+
         protected override void Dispose(bool disposing) {
             _vertexBuffer.Dispose();
             _indexBuffer.Dispose();

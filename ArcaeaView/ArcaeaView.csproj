@@ -72,6 +72,7 @@
     <Compile Include="Configuration\BeatmapLoaderConfig.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
+    <Compile Include="Subsystems\Rendering\BottomlessColoredTriangularPrism.cs" />
     <Compile Include="Subsystems\Rendering\Camera.cs" />
     <Compile Include="Core\MathF.cs" />
     <Compile Include="Subsystems\Rendering\ColoredBox.cs" />

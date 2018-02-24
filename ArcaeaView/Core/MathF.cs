@@ -33,6 +33,11 @@ namespace Moe.Mottomo.ArcaeaSim.Core {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Sqrt(float value) {
+            return (float)Math.Sqrt(value);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float ClampLower(float value, float lowerBound) {
             return value < lowerBound ? lowerBound : value;
         }

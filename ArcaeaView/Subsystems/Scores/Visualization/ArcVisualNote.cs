@@ -22,8 +22,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             PreviewStartY = beatmap.CalculateY(baseNote.StartTick, metrics, metrics.FinishLineY);
             PreviewEndY = beatmap.CalculateY(baseNote.EndTick, metrics, metrics.FinishLineY);
 
-            _hexahedron = new BottomlessColoredHexahedron(beatmap.GraphicsDevice);
-            _shadowRectangle = new ColoredParallelogram(beatmap.GraphicsDevice);
+            _arcMesh = new BottomlessColoredTriangularPrism(beatmap.GraphicsDevice);
+            _shadow = new ColoredParallelogram(beatmap.GraphicsDevice);
 
             if (baseNote.SkyNotes != null && baseNote.SkyNotes.Length > 0) {
                 SkyVisualNotes = baseNote.SkyNotes.Select(n => new SkyVisualNote(beatmap, n, this, metrics)).ToArray();
@@ -99,7 +99,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             bool castShadow;
 
             if (n.IsPlayable) {
-                color = _baseNote.Color == ArcColor.Magenta ? DeeperPink : DeeperSkyBlue;
+                color = _baseNote.Color == ArcColor.Magenta ? RedArc : BlueArc;
                 arcSectionSize = new Vector2(metrics.PlayableArcWidth, metrics.PlayableArcTallness);
                 alpha = 0.75f;
                 castShadow = true;
@@ -110,9 +110,10 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 castShadow = false;
             }
 
+            var segmentCount = n.EndTick - n.StartTick > 1000 ? 14 : 7;
             var effect = (BasicEffect)NoteEffects.Effects[(int)n.Type];
 
-            DrawArc(effect, start, end, _baseNote.Easing, color, alpha, arcSectionSize, castShadow);
+            DrawArc(effect, segmentCount, start, end, _baseNote.Easing, color, alpha, arcSectionSize, castShadow);
         }
 
         public override bool IsVisible(int beatmapTicks, float currentY) {
@@ -144,16 +145,14 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 }
             }
 
-            _hexahedron?.Dispose();
-            _hexahedron = null;
+            _arcMesh?.Dispose();
+            _arcMesh = null;
 
-            _shadowRectangle?.Dispose();
-            _shadowRectangle = null;
+            _shadow?.Dispose();
+            _shadow = null;
         }
 
-        private void DrawArc([NotNull] BasicEffect effect, Vector3 start, Vector3 end, ArcEasing easing, Color color, float alpha, Vector2 arcSectionSize, bool castShadow) {
-            const int segmentCount = 9;
-
+        private void DrawArc([NotNull] BasicEffect effect, int segmentCount, Vector3 start, Vector3 end, ArcEasing easing, Color color, float alpha, Vector2 arcSectionSize, bool castShadow) {
             var lastPoint = start;
 
             for (var i = 1; i <= segmentCount; ++i) {
@@ -167,24 +166,24 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                     currentPoint = ArcEasingHelper.Ease(start, end, ratio, easing);
                 }
 
-                _hexahedron.SetVertices(lastPoint, currentPoint, color, arcSectionSize);
+                _arcMesh.SetVerticesXY(lastPoint, currentPoint, color, arcSectionSize.X);
 
                 effect.TextureEnabled = false;
                 effect.VertexColorEnabled = true;
 
                 effect.Alpha = alpha;
 
-                _hexahedron.Draw(effect.CurrentTechnique);
+                _arcMesh.Draw(effect.CurrentTechnique);
 
                 if (castShadow) {
-                    _shadowRectangle.SetVerticesXY(lastPoint.XY(), currentPoint.XY(), arcSectionSize.X, Color.White, ShadowZ);
+                    _shadow.SetVerticesXYParallel(lastPoint.XY(), currentPoint.XY(), arcSectionSize.X, Color.White, ShadowZ);
 
                     effect.TextureEnabled = false;
                     effect.VertexColorEnabled = true;
 
                     effect.Alpha = 0.1f;
 
-                    _shadowRectangle.Draw(effect.CurrentTechnique);
+                    _shadow.Draw(effect.CurrentTechnique);
                 }
 
                 // Update the point.
@@ -196,13 +195,13 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
         private Texture2D _texture1;
 
-        private static readonly Color DeeperPink = new Color(220, 151, 193).ChangeBrightness(-40);
-        private static readonly Color DeeperSkyBlue = Color.DeepSkyBlue.ChangeBrightness(-80);
+        private static readonly Color RedArc = new Color(0xe6, 0x32, 0x32);
+        private static readonly Color BlueArc = Color.DeepSkyBlue.ChangeBrightness(-80);
 
         private readonly ArcNote _baseNote;
         private readonly StageMetrics _metrics;
-        private BottomlessColoredHexahedron _hexahedron;
-        private ColoredParallelogram _shadowRectangle;
+        private BottomlessColoredTriangularPrism _arcMesh;
+        private ColoredParallelogram _shadow;
 
     }
 }

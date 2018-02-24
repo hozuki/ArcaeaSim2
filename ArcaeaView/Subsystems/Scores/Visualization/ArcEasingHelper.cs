@@ -32,7 +32,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 case ArcEasing.So:
                 case ArcEasing.SiSo:
                 case ArcEasing.SoSi:
-                    return EaseSinoid(start, end, t, easing);
+                    return EaseSinus(start, end, t, easing);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(easing), easing, null);
             }
@@ -61,7 +61,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static Vector3 EaseSinoid(Vector3 p1, Vector3 p2, float t, ArcEasing easing) {
+        private static Vector3 EaseSinus(Vector3 p1, Vector3 p2, float t, ArcEasing easing) {
             var y = MathHelper.Lerp(p1.Y, p2.Y, t);
 
             float sx, sz;

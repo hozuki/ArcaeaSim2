@@ -156,7 +156,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Entities {
                     var note = new TimingNote();
                     note.Tick = Convert.ToInt32(segs[0]);
                     note.Bpm = Convert.ToSingle(segs[1]);
-                    note.Measure = Convert.ToSingle(segs[2]);
+                    note.BeatsPerMeasure = Convert.ToSingle(segs[2]);
 
                     notes.Add(note);
                 } else {

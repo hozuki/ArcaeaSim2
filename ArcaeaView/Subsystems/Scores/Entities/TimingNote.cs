@@ -14,9 +14,9 @@
         public float Bpm { get; set; }
 
         /// <summary>
-        /// Measure index.
+        /// Beats per measure.
         /// </summary>
-        public float Measure { get; set; }
+        public float BeatsPerMeasure { get; set; }
 
         public override NoteType Type => NoteType.Timing;
 
