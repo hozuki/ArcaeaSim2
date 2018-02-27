@@ -9,8 +9,6 @@ configuration:
 environment:
   EnableNuGetPackageRestore: true
   Release_Suffix: -alpha
-  NuGet_API_Key:
-    secure: izZ+2u3Vp3ykQNtVQqYtsmP4SoCO3vZ0gUp4zFCRsa0pBNgdkX354tc7VItMD5yh
 before_build:
   - cmd: nuget update -self
   - cmd: git submodule update --init --recursive
