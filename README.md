@@ -10,6 +10,23 @@ However, neither is it expected to go beyond the line to be a clone of Arcaea.
 - [Demo video 1](https://www.bilibili.com/video/av19881005/) (even before the initial commit; a very early technical preview so it may not look very appealing)
 - [Demo video 2](https://www.bilibili.com/video/av19981419/) (that's better)
 
+| Downloads| |
+|--|--|
+| [GitHub Releases](https://github.com/hozuki/ArcaeaSim/releases) | ![GitHub (pre-)release](https://img.shields.io/github/release/hozuki/ArcaeaSim/all.svg) ![Github All Releases](https://img.shields.io/github/downloads/hozuki/MilliSim/total.svg) |
+| [AppVeyor](https://ci.appveyor.com/api/projects/hozuki/ArcaeaSim/artifacts/arcaeasim-appveyor-latest.zip) | (latest development build) |
+
+| Build Status | |
+|--|--|
+| AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/hozuki/ArcaeaSim.svg)](https://ci.appveyor.com/project/hozuki/ArcaeaSim) |
+
+**Stage:** alpha
+
+**Miscellaneous:**
+
+[![GitHub contributors](https://img.shields.io/github/contributors/hozuki/ArcaeaSim.svg)](https://github.com/hozuki/ArcaeaSim/graphs/contributors)
+[![Libraries.io for GitHub](https://img.shields.io/librariesio/github/hozuki/ArcaeaSim.svg)](https://github.com/hozuki/ArcaeaSim)
+[![license](https://img.shields.io/github/license/hozuki/ArcaeaSim.svg)](LICENSE.txt)
+
 ## Usage
 
 *This section is for end users, using packaged binaries and resources.*
@@ -43,6 +60,7 @@ If you turn on the debug mode you will see the MP3 format issue in error log. In
 such as Foobar2000 and Audition, and feed ArcaeaSim with converted MP3 files.
 - Windows 7 (w/ SP1) may raise [ACM](https://msdn.microsoft.com/en-us/library/windows/desktop/dd742945.aspx) "conversion not possible" exception if you play the MP3 files.
 You can try to convert them to other formats, such as Wave audio files, and modify `audio_controller.yml` to load the converted files.
+- [Some other possible reasons of ArcaeaSim not starting](https://github.com/hozuki/MilliSim#note-if-millisim-cannot-launch).
 
 ## Development
 
