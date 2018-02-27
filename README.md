@@ -12,7 +12,7 @@ However, neither is it expected to go beyond the line to be a clone of Arcaea.
 
 | Downloads| |
 |--|--|
-| [GitHub Releases](https://github.com/hozuki/ArcaeaSim/releases) | ![GitHub (pre-)release](https://img.shields.io/github/release/hozuki/ArcaeaSim/all.svg) ![Github All Releases](https://img.shields.io/github/downloads/hozuki/MilliSim/total.svg) |
+| [GitHub Releases](https://github.com/hozuki/ArcaeaSim/releases) | ![GitHub (pre-)release](https://img.shields.io/github/release/hozuki/ArcaeaSim/all.svg) ![Github All Releases](https://img.shields.io/github/downloads/hozuki/ArcaeaSim/total.svg) |
 | [AppVeyor](https://ci.appveyor.com/api/projects/hozuki/ArcaeaSim/artifacts/arcaeasim-appveyor-latest.zip) | (latest development build) |
 
 | Build Status | |
