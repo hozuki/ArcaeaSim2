@@ -41,7 +41,9 @@ after_build:
   - cmd: rmdir /s /q %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\x86
   - cmd: 7z a arcaeasim.zip -r %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\*
   - cmd: 7z a arcaeasim.zip %APPVEYOR_BUILD_FOLDER%\README.html
+  - cmd: cd thirdparty\MilliSim
   - cmd: 7z a arcaeasim.zip -r docs\licenses\*
+  - cmd: cd ..\..
   - cmd: copy arcaeasim.zip arcaeasim-appveyor-latest.zip
   - cmd: copy arcaeasim.zip arcaeasim-appveyor-v%APPVEYOR_BUILD_VERSION%%RELEASE_SUFFIX%.zip
 test: off
