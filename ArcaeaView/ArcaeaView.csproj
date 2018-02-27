@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\BeatmapLoaderConfig.cs" />
+    <Compile Include="Configuration\TrackDisplayConfig.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\Vector3Extensions.cs" />
     <Compile Include="Subsystems\Rendering\BottomlessColoredTetrahedron.cs" />
@@ -117,6 +118,9 @@
     <Compile Include="Subsystems\Scores\Visualization\VisualNoteBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Contents\config\track_display.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Contents\config\beatmap_loader.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

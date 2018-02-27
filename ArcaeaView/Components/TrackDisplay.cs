@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Moe.Mottomo.ArcaeaSim.Configuration;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Rendering;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Entities;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization;
@@ -48,13 +49,15 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
                 _beatmap = new VisualBeatmap(game.GraphicsDevice, beatmap, _stageMetrics);
             }
 
-            _panelTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/track_dark.png");
-            _trackLaneDividerTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/track_lane_divider.png");
-            _skyInputTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/air_input.png");
+            var config = ConfigurationStore.Get<TrackDisplayConfig>();
 
-            _noteTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/note_dark.png");
-            _noteHoldTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/note_hold_dark.png");
-            _noteHoldHighlightedTexture = ContentHelper.LoadTexture(game.GraphicsDevice, @"Contents/res/img/note_hold_dark_hi.png");
+            _panelTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.PanelTexture);
+            _trackLaneDividerTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.TrackLaneDividerTexture);
+            _skyInputTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.SkyInputTexture);
+
+            _noteTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.NoteTexture);
+            _noteHoldTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.NoteHoldTexture);
+            _noteHoldHighlightedTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.NoteHoldHighlightedTexture);
 
             var metrics = _stageMetrics;
 

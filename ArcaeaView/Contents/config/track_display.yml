@@ -1,0 +1,12 @@
+﻿metadata:
+  type: Moe.Mottomo.ArcaeaSim.Configuration.TrackDisplayConfig
+  assembly_file: ArcaeaView.dll
+  for: component.score.track_display
+  version: 1 # format version
+data:
+  panel_texture: Contents/res/img/track_dark.png
+  track_lane_divider_texture: Contents/res/img/track_lane_divider.png
+  sky_input_texture: Contents/res/img/air_input.png
+  note_texture: Contents/res/img/note_dark.png
+  note_hold_texture: Contents/res/img/note_hold_dark.png
+  note_hold_highlighted_texture: Contents/res/img/note_hold_dark_hi.png
