@@ -57,6 +57,9 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             var result = mt3 * p1 + 3 * mt2 * t * cp1 + 3 * mt * t2 * cp2 + t3 * p2;
 
+            // TODO: Seriously?
+            result.Y = MathHelper.Lerp(p1.Y, p2.Y, t);
+
             return result;
         }
 
@@ -84,6 +87,9 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             switch (easing) {
                 case ArcEasing.Si:
                 case ArcEasing.So:
+                    // Credit: @k//eternal小号です
+                    sz = t;
+                    break;
                 case ArcEasing.SoSi:
                 case ArcEasing.SiSi:
                     sz = MathF.Sin(t * MathHelper.PiOver2);

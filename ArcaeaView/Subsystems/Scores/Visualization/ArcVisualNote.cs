@@ -207,6 +207,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 // However, we must ensure that the movement of the intersection of the arc and XoZ plane is always continuous,
                 // therefore we must call the easing function again to retrieve its precise new location, instead of learping
                 // inside the segment's start and end (shows recognizable "shaking" effect).
+                // Credit: @k//eternal小号です
                 if (lastPoint.Y < zeroY) {
                     var ratio = (zeroY - start.Y) / (end.Y - start.Y);
                     fixedLastPoint = ArcEasingHelper.Ease(start, end, ratio, easing);
