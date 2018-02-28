@@ -102,7 +102,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             // Cast shadow
             effect.TextureEnabled = false;
             effect.VertexColorEnabled = true;
-            effect.Alpha = 0.1f;
+            effect.Alpha = 0.5f;
 
             _shadowRectangle.Draw(effect.CurrentTechnique);
         }
@@ -155,7 +155,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             _vertexBuffer2.SetData(vertices2);
 
-            _shadowRectangle.SetVerticesXY(bottomNearLeft.XY(), size.XY(), Color.White, ShadowZ);
+            _shadowRectangle.SetVerticesXY(bottomNearLeft.XY(), size.XY(), Color.Gray, ShadowZ);
         }
 
         public void SetTexture([NotNull] Texture2D texture) {
@@ -176,7 +176,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _shadowRectangle = null;
         }
 
-        private const float ShadowZ = 0.01f;
+        private const float ShadowZ = 0.03f;
 
         private Texture2D _texture;
 

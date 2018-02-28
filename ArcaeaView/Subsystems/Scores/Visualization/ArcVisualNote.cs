@@ -232,12 +232,12 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
                 // Draw shadow if needed.
                 if (castShadow) {
-                    _shadow.SetVerticesXYParallel(fixedLastPoint.XY(), fixedCurrentPoint.XY(), arcSectionSize.X, Color.White, ShadowZ);
+                    _shadow.SetVerticesXYParallel(fixedLastPoint.XY(), fixedCurrentPoint.XY(), arcSectionSize.X, Color.Gray, ShadowZ);
 
                     effect.TextureEnabled = false;
                     effect.VertexColorEnabled = true;
 
-                    effect.Alpha = 0.1f;
+                    effect.Alpha = 0.5f;
 
                     _shadow.Draw(effect.CurrentTechnique);
                 }
@@ -247,7 +247,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             }
         }
 
-        private const float ShadowZ = 0.01f;
+        private const float ShadowZ = 0.03f;
 
         private Texture2D _skyVisualNoteTexture;
         private Texture2D _supportTexture;
