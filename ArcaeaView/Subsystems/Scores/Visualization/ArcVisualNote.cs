@@ -64,33 +64,13 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 }
             }
 
-            float startX, startY, startZ;
-
-            if (n.StartTick < beatmapTicks) {
-                var ratio = (float)(beatmapTicks - n.StartTick) / (n.EndTick - n.StartTick);
-                var xRatio = MathHelper.Lerp(n.StartX, n.EndX, ratio);
-                var yRatio = MathHelper.Lerp(n.StartY, n.EndY, ratio);
-
-                startX = (xRatio - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
-                startY = metrics.FinishLineY;
-                startZ = metrics.SkyInputZ * yRatio;
-            } else {
-                startX = (n.StartX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
-                startY = PreviewStartY - currentY;
-                startZ = metrics.SkyInputZ * n.StartY;
-            }
+            var startX = (n.StartX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
+            var startY = PreviewStartY - currentY;
+            var startZ = metrics.SkyInputZ * n.StartY;
 
             var endX = (n.EndX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
             var endY = PreviewEndY - currentY;
             var endZ = metrics.SkyInputZ * n.EndY;
-
-            if (endY > metrics.TrackLength) {
-                var ratio = (metrics.TrackLength - startY) / (endY - startY);
-
-                endY = metrics.TrackLength;
-                endX = MathHelper.Lerp(startX, endX, ratio);
-                endZ = MathHelper.Lerp(startZ, endZ, ratio);
-            }
 
             var start = new Vector3(startX, startY, startZ);
             var end = new Vector3(endX, endY, endZ);
@@ -101,7 +81,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             bool castShadow;
 
             if (n.IsPlayable) {
-                arcColor = _baseNote.Color == ArcColor.Magenta ? RedArc : BlueArc;
+                arcColor = n.Color == ArcColor.Magenta ? RedArc : BlueArc;
                 arcSectionSize = new Vector2(metrics.PlayableArcWidth, metrics.PlayableArcTallness);
                 alpha = 0.75f;
                 castShadow = true;
@@ -115,7 +95,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             var segmentCount = n.EndTick - n.StartTick > 1000 ? 14 : 7;
             var effect = (BasicEffect)NoteEffects.Effects[(int)n.Type];
 
-            DrawArc(effect, segmentCount, start, end, _baseNote.Easing, arcColor, alpha, arcSectionSize, castShadow);
+            DrawArc(effect, segmentCount, start, end, n.Easing, arcColor, alpha, arcSectionSize, castShadow);
 
             if (n.IsPlayable) {
                 if (ShouldDrawHeader && beatmapTicks <= n.StartTick) {
@@ -198,19 +178,50 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
         private void DrawArc([NotNull] BasicEffect effect, int segmentCount, Vector3 start, Vector3 end, ArcEasing easing, Color color, float alpha, Vector2 arcSectionSize, bool castShadow) {
             var lastPoint = start;
+            var zeroY = _metrics.FinishLineY;
+            var trackEndY = _metrics.TrackLength;
 
             for (var i = 1; i <= segmentCount; ++i) {
+                if (lastPoint.Y > trackEndY) {
+                    // This segment and later segments have not entered the track yet.
+                    break;
+                }
+
                 Vector3 currentPoint;
 
                 if (i == segmentCount) {
                     currentPoint = end;
                 } else {
                     var ratio = (float)i / segmentCount;
-
                     currentPoint = ArcEasingHelper.Ease(start, end, ratio, easing);
                 }
 
-                _arcMesh.SetVerticesXY(lastPoint, currentPoint, color, arcSectionSize.X);
+                if (lastPoint.Y < zeroY && currentPoint.Y < zeroY) {
+                    // This segment has passed.
+                    continue;
+                }
+
+                Vector3 fixedLastPoint, fixedCurrentPoint;
+
+                // Recalculate the segment's start and end if needed.
+                // However, we must ensure that the movement of the intersection of the arc and XoZ plane is always continuous,
+                // therefore we must call the easing function again to retrieve its precise new location, instead of learping
+                // inside the segment's start and end (shows recognizable "shaking" effect).
+                if (lastPoint.Y < zeroY) {
+                    var ratio = (zeroY - start.Y) / (end.Y - start.Y);
+                    fixedLastPoint = ArcEasingHelper.Ease(start, end, ratio, easing);
+                } else {
+                    fixedLastPoint = lastPoint;
+                }
+
+                if (currentPoint.Y > trackEndY) {
+                    var ratio = (trackEndY - start.Y) / (end.Y - start.Y);
+                    fixedCurrentPoint = ArcEasingHelper.Ease(start, end, ratio, easing);
+                } else {
+                    fixedCurrentPoint = currentPoint;
+                }
+
+                _arcMesh.SetVerticesXY(fixedLastPoint, fixedCurrentPoint, color, arcSectionSize.X);
 
                 effect.TextureEnabled = false;
                 effect.VertexColorEnabled = true;
@@ -219,8 +230,9 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
                 _arcMesh.Draw(effect.CurrentTechnique);
 
+                // Draw shadow if needed.
                 if (castShadow) {
-                    _shadow.SetVerticesXYParallel(lastPoint.XY(), currentPoint.XY(), arcSectionSize.X, Color.White, ShadowZ);
+                    _shadow.SetVerticesXYParallel(fixedLastPoint.XY(), fixedCurrentPoint.XY(), arcSectionSize.X, Color.White, ShadowZ);
 
                     effect.TextureEnabled = false;
                     effect.VertexColorEnabled = true;
