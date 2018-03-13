@@ -61,7 +61,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                     }
 
                     foreach (var skyVisualNote in arcVisualNote.SkyVisualNotes) {
-                        if (((SkyNote)skyVisualNote.BaseNote).Tick == floorBase.Tick) {
+                        if (Math.Abs(((SkyNote)skyVisualNote.BaseNote).Tick - floorBase.Tick) <= 1) {
                             n.SynchronizedSkyVisualNote = skyVisualNote;
                             break;
                         }

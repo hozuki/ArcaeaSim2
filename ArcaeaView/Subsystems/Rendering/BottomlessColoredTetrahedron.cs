@@ -39,8 +39,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             var std = rightAngleSideWidth / 2;
             var dx = std;
             var dy = std;
-            var dzDown = std / 3;
-            var dzUp = dzDown * 2;
+            var dzDown = std / 2;
+            var dzUp = dzDown;
 
             var vertices = new[] {
                 new VertexPositionColor {Position = new Vector3(point.X, point.Y, point.Z + dzUp), Color = color},

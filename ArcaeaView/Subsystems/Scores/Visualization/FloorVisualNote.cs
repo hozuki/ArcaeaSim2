@@ -24,7 +24,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
         public override void Draw(int beatmapTicks, float currentY) {
             var metrics = _metrics;
-            var left = ((int)_baseNote.Track - 1) * metrics.TrackInnerWidth / 4 - metrics.HalfTrackInnerWidth;
+            var left = ((int)_baseNote.Track - 0.5f) * metrics.TrackInnerWidth / 4 - metrics.FloorNoteWidth / 2 - metrics.HalfTrackInnerWidth;
             var bottom = PreviewY - currentY;
 
             var bottomLeft = new Vector2(left, bottom);
@@ -51,16 +51,24 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 var n = (ArcNote)synced.Parent.BaseNote;
 
                 // TODO: This calculation can be executed when loading the beatmap, and store in some fields like "PreviewX".
+
+                // var skyPoint = new Vector3(skyMiddle, skyBottom, skyEdge);
+                // Optimization for sky point calculation needed
+
                 var ratio = (float)(((SkyNote)synced.BaseNote).Tick - n.StartTick) / (n.EndTick - n.StartTick);
 
-                var xRatio = MathHelper.Lerp(n.StartX, n.EndX, ratio);
-                var yRatio = MathHelper.Lerp(n.StartY, n.EndY, ratio);
+                var startX = (n.StartX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
+                var startZ = metrics.SkyInputZ * n.StartY + metrics.PlayableArcTallness * (1 - n.StartY) / 4;
 
-                var skyMiddle = (xRatio - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
-                var skyBottom = synced.PreviewY - currentY;
-                var skyEdge = metrics.SkyInputZ * yRatio - metrics.SkyNoteTallness / 2;
+                var endX = (n.EndX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
+                var endZ = metrics.SkyInputZ * n.EndY + metrics.PlayableArcTallness * (1 - n.EndY) / 4;
 
-                var skyPoint = new Vector3(skyMiddle, skyBottom, skyEdge);
+                var start = new Vector3(startX, 1, startZ);
+                var end = new Vector3(endX, 1, endZ);
+
+                var skyPoint = ArcEasingHelper.Ease(start, end, ratio, n.Easing);
+                skyPoint.Y = synced.PreviewY - currentY;
+
                 var thisPoint = new Vector3(left + metrics.FloorNoteWidth / 2, bottom, Z);
 
                 _linkHexahedron.SetVerticesXZ(thisPoint, skyPoint, Color.PaleVioletRed, LinkSectionSize);

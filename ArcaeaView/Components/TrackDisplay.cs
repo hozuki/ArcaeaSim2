@@ -58,6 +58,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             _noteTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.NoteTexture);
             _noteHoldTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.NoteHoldTexture);
             _noteHoldHighlightedTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.NoteHoldHighlightedTexture);
+            _noteSkyTexture = ContentHelper.LoadTexture(game.GraphicsDevice, config.Data.NoteSkyTexture);
 
             var metrics = _stageMetrics;
 
@@ -94,6 +95,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
 
             _noteTexture?.Dispose();
             _noteHoldTexture?.Dispose();
+            _noteSkyTexture?.Dispose();
 
             _trackRectangle?.Dispose();
             if (_laneDividerRectangles != null && _laneDividerRectangles.Length > 0) {
@@ -235,7 +237,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
                             break;
                         case NoteType.Arc: {
                                 var n = (ArcVisualNote)note;
-                                n.SetSkyNoteTexture(_noteHoldTexture);
+                                n.SetSkyNoteTexture(_noteSkyTexture);
                                 n.SetSupportTexture(_skyInputTexture);
                                 n.Draw(beatmapTicks, currentY);
                             }
@@ -292,6 +294,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
         private Texture2D _noteTexture;
         private Texture2D _noteHoldTexture;
         private Texture2D _noteHoldHighlightedTexture;
+        private Texture2D _noteSkyTexture;
 
         private TexturedRectangle _trackRectangle;
         private TexturedRectangle _finishLineRectangle;

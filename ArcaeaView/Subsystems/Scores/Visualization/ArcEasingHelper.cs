@@ -23,8 +23,6 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             switch (easing) {
                 case ArcEasing.S:
-                case ArcEasing.SoSo:
-                case ArcEasing.SiSi:
                     return EaseLinear(start, end, t);
                 case ArcEasing.CubicBezier:
                     return EaseCubicBezier(start, end, t);
@@ -32,6 +30,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 case ArcEasing.So:
                 case ArcEasing.SiSo:
                 case ArcEasing.SoSi:
+                case ArcEasing.SoSo:
+                case ArcEasing.SiSi:
                     return EaseSinus(start, end, t, easing);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(easing), easing, null);
@@ -51,16 +51,11 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             var t2 = t * t;
             var t3 = t2 * t;
 
-            var d = p2.Y - p1.Y;
-            var cp1 = new Vector3(p1.X, p1.Y + d / 4, p1.Z);
-            var cp2 = new Vector3(p2.X, p2.Y - d / 4, p2.Z);
+            var X = mt3 * p1.X + 3 * mt2 * t * p1.X + 3 * mt * t2 * p2.X + t3 * p2.X;
+            var Y = MathHelper.Lerp(p1.Y, p2.Y, t);
+            var Z = mt3 * p1.Z + 3 * mt2 * t * p1.Z + 3 * mt * t2 * p2.Z + t3 * p2.Z;
 
-            var result = mt3 * p1 + 3 * mt2 * t * cp1 + 3 * mt * t2 * cp2 + t3 * p2;
-
-            // TODO: Seriously?
-            result.Y = MathHelper.Lerp(p1.Y, p2.Y, t);
-
-            return result;
+            return new Vector3(X, Y, Z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -78,7 +73,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 case ArcEasing.So:
                 case ArcEasing.SoSi:
                 case ArcEasing.SoSo:
-                    sx = 1 - MathF.Sin((1 + t) * MathHelper.PiOver2);
+                    sx = 1 - MathF.Cos(t * MathHelper.PiOver2);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(easing), easing, null);
@@ -87,7 +82,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             switch (easing) {
                 case ArcEasing.Si:
                 case ArcEasing.So:
-                    // Credit: @k//eternal小号です
+                    // Credit: @18111398
                     sz = t;
                     break;
                 case ArcEasing.SoSi:
@@ -96,7 +91,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                     break;
                 case ArcEasing.SiSo:
                 case ArcEasing.SoSo:
-                    sz = 1 - MathF.Sin((1 + t) * MathHelper.PiOver2);
+                    sz = 1 - MathF.Cos(t * MathHelper.PiOver2);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(easing), easing, null);

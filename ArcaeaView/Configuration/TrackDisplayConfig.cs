@@ -19,6 +19,8 @@ namespace Moe.Mottomo.ArcaeaSim.Configuration {
 
             public string NoteHoldHighlightedTexture { get; set; }
 
+            public string NoteSkyTexture { get; set; }
+
         }
 
     }

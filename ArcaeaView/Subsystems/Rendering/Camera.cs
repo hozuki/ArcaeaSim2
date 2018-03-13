@@ -214,7 +214,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             _roll = 0;
         }
 
-        private const float ViewerHeight = 15.0f;
+        private const float ViewerHeight = 10.5f;
 
         private Vector3 _up = Vector3.UnitZ;
         private Vector3 _lookAtTarget;
