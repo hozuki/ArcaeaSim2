@@ -12,7 +12,7 @@ component_factories:
   # the latter, the closer to the top
   # core: base
   - plugin.component_factory.sync_timer
-  - plugin.component_factory.audio_controller
+  - plugin.component_factory.background_music
   # core: visual backgrounds
   - plugin.component_factory.background_video
   - plugin.component_factory.background_image

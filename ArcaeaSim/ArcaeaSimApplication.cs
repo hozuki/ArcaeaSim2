@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -107,7 +108,7 @@ namespace Moe.Mottomo.ArcaeaSim {
                         }
                         break;
                     case Keys.F6: {
-                            var audioController = this.FindSingleElement<AudioController>();
+                            var audioController = this.FindSingleElement<BackgroundMusic>();
                             audioController?.Music?.Source?.Stop();
                         }
                         break;
@@ -117,8 +118,11 @@ namespace Moe.Mottomo.ArcaeaSim {
             keyboardStateHandler.KeyDown += (s, e) => {
                 switch (e.KeyCode) {
                     case Keys.Space: {
-                            var audioController = this.FindSingleElement<AudioController>();
+                            var audioController = this.FindSingleElement<BackgroundMusic>();
                             var music = audioController?.Music;
+                            var syncTimer = this.FindSingleElement<SyncTimer>();
+
+                            Debug.Assert(syncTimer != null, nameof(syncTimer) + " != null");
 
                             if (music == null) {
                                 break;
@@ -128,8 +132,10 @@ namespace Moe.Mottomo.ArcaeaSim {
 
                             if (!isPlaying) {
                                 music.Source.PlayDirect();
+                                syncTimer.Stopwatch.Start();
                             } else {
                                 music.Source.Pause();
+                                syncTimer.Stopwatch.Stop();
                             }
 
                             var helpOverlay = this.FindSingleElement<HelpOverlay>();
@@ -207,7 +213,7 @@ namespace Moe.Mottomo.ArcaeaSim {
                 helpOverlay.Visible = true;
             }
 
-            var audioController = this.FindSingleElement<AudioController>();
+            var audioController = this.FindSingleElement<BackgroundMusic>();
             var music = audioController?.Music;
 
             if (music != null) {
@@ -215,6 +221,12 @@ namespace Moe.Mottomo.ArcaeaSim {
                     if (helpOverlay != null) {
                         helpOverlay.Visible = true;
                     }
+
+                    var syncTimer = this.FindSingleElement<SyncTimer>();
+
+                    Debug.Assert(syncTimer != null, nameof(syncTimer) + " != null");
+
+                    syncTimer.Stopwatch.Reset();
                 };
             }
         }
