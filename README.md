@@ -33,11 +33,10 @@ However, neither is it expected to go beyond the line to be a clone of Arcaea.
 
 Like MilliSim, you will need:
 
-
 - Operating System: Windows 7 SP1 or later
 - [.NET Framework 4.5](https://www.microsoft.com/en-us/download/details.aspx?id=42642)
 - [Visual C++ 2015 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=53587)
-- [OpenAL](https://www.openal.org/downloads/)
+- [OpenAL](http://kcat.strangesoft.net/openal.html#download) (OpenAL-Soft): Unzip the ZIP file, rename `soft_oal.dll` in `Win32` to `openal32.dll`, and place it in the directory of ArcaeaSim.
 
 There are four test songs included in the repo:
 
