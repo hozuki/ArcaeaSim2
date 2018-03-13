@@ -37,7 +37,18 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             var skyNotes = SkyVisualNotes;
             var n = _baseNote;
 
-            if (skyNotes?.Length > 0) {
+            var startX = (n.StartX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
+            var startY = PreviewStartY - currentY;
+            var startZ = metrics.SkyInputZ * n.StartY + metrics.PlayableArcTallness * (1 - n.StartY) / 4;
+
+            var endX = (n.EndX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
+            var endY = PreviewEndY - currentY;
+            var endZ = metrics.SkyInputZ * n.EndY + metrics.PlayableArcTallness * (1 - n.EndY) / 4;
+
+            var start = new Vector3(startX, startY, startZ);
+            var end = new Vector3(endX, endY, endZ);
+
+            if (skyNotes?.Length > 0){
                 var skyNoteSize = new Vector3(metrics.SkyNoteWidth, metrics.SkyNoteHeight, metrics.SkyNoteTallness);
 
                 foreach (var skyNote in skyNotes) {
@@ -47,14 +58,12 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
                     var ratio = (float)(((SkyNote)skyNote.BaseNote).Tick - n.StartTick) / (n.EndTick - n.StartTick);
 
-                    var xRatio = MathHelper.Lerp(n.StartX, n.EndX, ratio);
-                    var yRatio = MathHelper.Lerp(n.StartY, n.EndY, ratio);
+                    //var bottomNearLeft = new Vector3(left, bottom, corner);
 
-                    var left = (xRatio - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth - metrics.SkyNoteWidth / 2;
-                    var bottom = skyNote.PreviewY - currentY;
-                    var corner = metrics.SkyInputZ * yRatio - metrics.SkyNoteTallness / 2;
+                    var bottomNearLeft = ArcEasingHelper.Ease(start, end, ratio, n.Easing);
 
-                    var bottomNearLeft = new Vector3(left, bottom, corner);
+                    bottomNearLeft.X -= metrics.SkyNoteWidth / 2;
+                    bottomNearLeft.Z -= metrics.SkyNoteTallness / 2;
 
                     skyNote.SetVertices(bottomNearLeft, skyNoteSize);
 
@@ -64,16 +73,6 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 }
             }
 
-            var startX = (n.StartX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
-            var startY = PreviewStartY - currentY;
-            var startZ = metrics.SkyInputZ * n.StartY;
-
-            var endX = (n.EndX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
-            var endY = PreviewEndY - currentY;
-            var endZ = metrics.SkyInputZ * n.EndY;
-
-            var start = new Vector3(startX, startY, startZ);
-            var end = new Vector3(endX, endY, endZ);
 
             Color arcColor;
             Vector2 arcSectionSize;
@@ -207,7 +206,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 // However, we must ensure that the movement of the intersection of the arc and XoZ plane is always continuous,
                 // therefore we must call the easing function again to retrieve its precise new location, instead of learping
                 // inside the segment's start and end (shows recognizable "shaking" effect).
-                // Credit: @k//eternal小号です
+                // Credit: @18111398
                 if (lastPoint.Y < zeroY) {
                     var ratio = (zeroY - start.Y) / (end.Y - start.Y);
                     fixedLastPoint = ArcEasingHelper.Ease(start, end, ratio, easing);

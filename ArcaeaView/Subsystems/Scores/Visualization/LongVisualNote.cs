@@ -18,12 +18,12 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _metrics = metrics;
             _noteRectangle = new TexturedRectangle(beatmap.GraphicsDevice);
 
-            PreviewStartY = beatmap.CalculateY(baseNote.StartTick, metrics, -metrics.FloorNoteHeight / 2 + metrics.FinishLineY);
-            PreviewEndY = beatmap.CalculateY(baseNote.EndTick, metrics, -metrics.FloorNoteHeight / 2 + metrics.FinishLineY);
+            PreviewStartY = beatmap.CalculateY(baseNote.StartTick, metrics, metrics.FinishLineY);
+            PreviewEndY = beatmap.CalculateY(baseNote.EndTick, metrics, metrics.FinishLineY);
         }
 
         public override void Draw(int beatmapTicks, float currentY) {
-            var left = ((int)_baseNote.Track - 1) * _metrics.TrackInnerWidth / 4 - _metrics.HalfTrackInnerWidth;
+            var left = ((int)_baseNote.Track - 0.5f) * _metrics.TrackInnerWidth / 4 - _metrics.FloorNoteWidth / 2 - _metrics.HalfTrackInnerWidth;
             var bottom = PreviewStartY - currentY;
 
             if (bottom < _metrics.FinishLineY) {

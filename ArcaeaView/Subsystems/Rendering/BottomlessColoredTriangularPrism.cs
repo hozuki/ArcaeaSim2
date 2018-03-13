@@ -14,15 +14,14 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             _graphicsDevice = graphicsDevice;
 
             _vertexBuffer = new VertexBuffer(graphicsDevice, VertexPositionColor.VertexDeclaration, 6, BufferUsage.WriteOnly);
-            _indexBuffer = new IndexBuffer(graphicsDevice, IndexElementSize.SixteenBits, 18, BufferUsage.WriteOnly);
+            _indexBuffer = new IndexBuffer(graphicsDevice, IndexElementSize.SixteenBits, 12, BufferUsage.WriteOnly);
 
             var indices = new ushort[] {
+                // Arcs have only two sides.
                 0, 1, 3,
                 3, 1, 4,
                 0, 2, 3,
-                3, 2, 5,
-                1, 2, 4,
-                4, 2, 5
+                3, 2, 5
             };
 
             _indexBuffer.SetData(indices);
@@ -34,7 +33,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
 
             foreach (var pass in technique.Passes) {
                 pass.Apply();
-                _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 6);
+                _graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4);
             }
         }
 
@@ -42,8 +41,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             // Half of the width of the right angle side
             var std = rightAngleSideWidth / 2;
             var dx = std;
-            var dzDown = std / 3;
-            var dzUp = dzDown * 2;
+            var dzDown = std / 2;
+            var dzUp = dzDown;
 
             var vertices = new[] {
                 new VertexPositionColor {Position = new Vector3(start.X, start.Y, start.Z + dzUp), Color = color},

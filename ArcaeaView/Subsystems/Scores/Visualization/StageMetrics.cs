@@ -21,26 +21,26 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             LaneDividerWidth = 0.2f;
 
-            FloorNoteWidth = TrackInnerWidth / 4;
-            FloorNoteHeight = FloorNoteWidth / 2;
+            FloorNoteWidth = TrackInnerWidth / 64 * 15;
+            FloorNoteHeight = TrackInnerWidth / 8;
 
             SkyNoteWidth = TrackInnerWidth / 4;
-            SkyNoteHeight = FloorNoteWidth / 2;
-            SkyNoteTallness = FloorNoteWidth / 4;
+            SkyNoteHeight = SkyNoteWidth / 4;
+            SkyNoteTallness = SkyNoteHeight / 2;
 
             FinishLineY = 10;
             FinishLineHeight = 2f;
 
-            SkyInputZ = 10f;
+            SkyInputZ = TrackInnerWidth / 3.236f;
 
             SkyInputWidth = TrackInnerWidth * 1.25f;
             SkyInputTallness = 0.8f;
 
-            PlayableArcWidth = 1f;
-            PlayableArcTallness = 1f;
+            PlayableArcWidth = 2f;
+            PlayableArcTallness = 2f;
 
-            GuidingArcWidth = PlayableArcWidth * 0.25f;
-            GuidingArcTallness = PlayableArcTallness * 0.25f;
+            GuidingArcWidth = 0.25f;
+            GuidingArcTallness = 0.25f;
 
             PastTickThreshold = 0;
             FutureTickThreshold = 4000;
