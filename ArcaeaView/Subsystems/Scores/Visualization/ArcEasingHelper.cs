@@ -51,11 +51,11 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             var t2 = t * t;
             var t3 = t2 * t;
 
-            var X = mt3 * p1.X + 3 * mt2 * t * p1.X + 3 * mt * t2 * p2.X + t3 * p2.X;
-            var Y = MathHelper.Lerp(p1.Y, p2.Y, t);
-            var Z = mt3 * p1.Z + 3 * mt2 * t * p1.Z + 3 * mt * t2 * p2.Z + t3 * p2.Z;
+            var x = mt3 * p1.X + 3 * mt2 * t * p1.X + 3 * mt * t2 * p2.X + t3 * p2.X;
+            var y = MathHelper.Lerp(p1.Y, p2.Y, t);
+            var z = mt3 * p1.Z + 3 * mt2 * t * p1.Z + 3 * mt * t2 * p2.Z + t3 * p2.Z;
 
-            return new Vector3(X, Y, Z);
+            return new Vector3(x, y, z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
