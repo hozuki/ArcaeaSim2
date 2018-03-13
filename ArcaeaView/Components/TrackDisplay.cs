@@ -150,7 +150,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
 
             _basicEffect.TextureEnabled = true;
             _basicEffect.VertexColorEnabled = true;
-            _basicEffect.Alpha = 0.9f;
+            _basicEffect.Alpha = 1.0f;
             _basicEffect.Texture = _panelTexture;
 
             var metrics = _stageMetrics;
