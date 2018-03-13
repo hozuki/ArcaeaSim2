@@ -49,7 +49,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             effect.VertexColorEnabled = true;
 
             // Highlighted before the time reaches this note's start tick, and dim this note after that.
-            var isHighlighted = beatmapTicks < _baseNote.StartTick;
+            // Correction credit: @18111398
+            var isHighlighted = beatmapTicks >= _baseNote.StartTick;
             var texture = isHighlighted ? _hightlightedTexture : _texture;
 
             effect.Texture = texture;
