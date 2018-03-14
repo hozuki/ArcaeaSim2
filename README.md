@@ -36,7 +36,7 @@ Like MilliSim, you will need:
 - Operating System: Windows 7 SP1 or later
 - [.NET Framework 4.5](https://www.microsoft.com/en-us/download/details.aspx?id=42642)
 - [Visual C++ 2015 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=53587)
-- [OpenAL](http://kcat.strangesoft.net/openal.html#download) (OpenAL-Soft): Unzip the ZIP file, rename `soft_oal.dll` in `Win32` to `openal32.dll`, and place it in the directory of ArcaeaSim.
+- OpenAL (bundled OpenAL-Soft Win32 build in newer releases)
 
 There are four test songs included in the repo:
 
