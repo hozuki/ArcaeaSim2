@@ -1,0 +1,63 @@
+# https://www.appveyor.com/docs/appveyor-yml/
+
+version: 1.0.3.{build}
+image: Visual Studio 2017
+platform:
+  - x86
+configuration:
+  - Release
+environment:
+  EnableNuGetPackageRestore: true
+  Release_Suffix: -alpha
+before_build:
+  - cmd: nuget update -self
+  - cmd: git submodule update --init --recursive
+  - cmd: cd thirdparty\MilliSim
+  - cmd: npm install
+  - cmd: cd ..\..
+  - cmd: npm install -g marked
+  - cmd: node thirdparty\MilliSim\scripts\nuget_restore.js
+  - cmd: cd thirdparty\MilliSim
+  - cmd: node scripts\patch_asminfo.js
+  - cmd: cd ..\..
+  - ps: .\thirdparty\MilliSim\scripts\install_monogame.ps1
+build_script:
+  - cmd: msbuild ArcaeaSim.sln /p:Configuration=Release /verbosity:minimal /p:nowarn="1574,1591"
+after_build:
+  - ps: .\thirdparty\MilliSim\scripts\extract-openal-soft.ps1 -destination $Env:APPVEYOR_BUILD_FOLDER\ArcaeaSim\bin\Windows\x86\$Env:CONFIGURATION\
+  - cmd: marked ./README.md -o ./README.html
+  - cmd: cd thirdparty\MilliSim
+  - cmd: node scripts\appveyor_copy_licenses.js
+  - cmd: cd ..\..
+  - cmd: del %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\*.xml
+  - cmd: del %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\*.pdb
+  # Remove useless SkiaSharp native libraries (we only need the one in x86 dir)
+  - cmd: del %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\libSkiaSharp.*
+  - cmd: copy %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\x86\libSkiaSharp.dll %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\
+  # Remove useless x64 dir (Direct3D branch targets x86)
+  - cmd: rmdir /s /q %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\x64
+  # x86 dir is not need either (and we don't have FFmpeg here)
+  - cmd: rmdir /s /q %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\x86
+  - cmd: 7z a arcaeasim.zip -r %APPVEYOR_BUILD_FOLDER%\ArcaeaSim\bin\Windows\x86\%CONFIGURATION%\*
+  - cmd: 7z a arcaeasim.zip %APPVEYOR_BUILD_FOLDER%\README.html
+  - cmd: cd thirdparty\MilliSim
+  - cmd: 7z a arcaeasim.zip -r docs\licenses\*
+  - cmd: cd ..\..
+  - cmd: copy arcaeasim.zip arcaeasim-appveyor-latest.zip
+  - cmd: copy arcaeasim.zip arcaeasim-appveyor-v%APPVEYOR_BUILD_VERSION%%RELEASE_SUFFIX%.zip
+test: off
+artifacts:
+  - path: arcaeasim-appveyor-v%APPVEYOR_BUILD_VERSION%%RELEASE_SUFFIX%.zip
+    name: WithVersion
+  - path: arcaeasim-appveyor-latest.zip
+    name: Static
+deploy:
+  - provider: GitHub
+    description: ArcaeaSim
+    auth_token:
+      secure: u+MFjjY665AT4PHJ2bFMINBLnnnwSj1jLnNeFZoWfeYbomTNSPOmdahffmZa+dRH
+    artifact: /arcaeasim.+\.zip/
+    draft: false
+    prerelease: true
+    on:
+      appveyor_repo_tag: true

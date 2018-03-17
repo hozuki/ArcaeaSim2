@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8647E62C-8760-4EE3-9CDE-0F2D15FA7CB4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Moe.Mottomo.ArcaeaSim</RootNamespace>
+    <AssemblyName>ArcaeaView</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Portable.3.6.0.1625\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.AttributedModel.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.Convention.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.Hosting.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.Runtime.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.TypedParts.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="YamlDotNet, Version=4.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlDotNet.4.3.1\lib\net45\YamlDotNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\BeatmapLoaderConfig.cs" />
+    <Compile Include="Configuration\TrackDisplayConfig.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\Vector3Extensions.cs" />
+    <Compile Include="Subsystems\Rendering\BottomlessColoredTetrahedron.cs" />
+    <Compile Include="Subsystems\Rendering\BottomlessColoredTriangularPrism.cs" />
+    <Compile Include="Subsystems\Rendering\Camera.cs" />
+    <Compile Include="Core\MathF.cs" />
+    <Compile Include="Subsystems\Rendering\ColoredBox.cs" />
+    <Compile Include="Subsystems\Rendering\BottomlessColoredHexahedron.cs" />
+    <Compile Include="Subsystems\Rendering\ColoredParallelogram.cs" />
+    <Compile Include="Subsystems\Rendering\ColoredRectangle.cs" />
+    <Compile Include="Subsystems\Rendering\ColoredHexahedron.cs" />
+    <Compile Include="Subsystems\Rendering\DrawableGeometryMesh.cs" />
+    <Compile Include="Subsystems\Rendering\TexturedRectangle.cs" />
+    <Compile Include="Components\Cameraman.cs" />
+    <Compile Include="Components\BeatmapLoaderFactory.cs" />
+    <Compile Include="Components\BeatmapLoader.cs" />
+    <Compile Include="Components\TrackDisplayFactory.cs" />
+    <Compile Include="Components\CameramanFactory.cs" />
+    <Compile Include="Components\TrackDisplay.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subsystems\Scores\Entities\Beatmap.cs" />
+    <Compile Include="Subsystems\Scores\Entities\ArcNote.cs" />
+    <Compile Include="Subsystems\Scores\Entities\LongNote.cs" />
+    <Compile Include="Subsystems\Scores\Entities\NoteBase.cs" />
+    <Compile Include="Subsystems\Scores\Entities\SkyNote.cs" />
+    <Compile Include="Subsystems\Scores\Entities\ArcColor.cs" />
+    <Compile Include="Subsystems\Scores\Entities\FloorNote.cs" />
+    <Compile Include="Subsystems\Scores\Entities\NoteType.cs" />
+    <Compile Include="Subsystems\Scores\Entities\TimingNote.cs" />
+    <Compile Include="Subsystems\Scores\Entities\Track.cs" />
+    <Compile Include="Subsystems\Scores\IHasTick.cs" />
+    <Compile Include="Subsystems\Scores\IHasTicks.cs" />
+    <Compile Include="Subsystems\Scores\IPreviewNote.cs" />
+    <Compile Include="Subsystems\Scores\IRangedPreviewNote.cs" />
+    <Compile Include="Subsystems\Scores\Entities\ArcEasing.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\ArcEasingHelper.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\IDrawableNote.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\NoteEffects.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\SkyVisualNote.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\ArcVisualNote.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\LongVisualNote.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\StageMetrics.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\FloorVisualNote.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\VisualBeatmap.cs" />
+    <Compile Include="Subsystems\Scores\Visualization\VisualNoteBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Contents\config\track_display.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Contents\config\beatmap_loader.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Contents\res\fx\compile_effects.bat" />
+    <None Include="Contents\res\fx\monogame.fxh" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\thirdparty\MilliSim\src\OpenMLTD.MilliSim.Runtime\OpenMLTD.MilliSim.Runtime.csproj">
+      <Project>{2f7ecba5-aa8b-4ab2-8f84-585352935a1b}</Project>
+      <Name>OpenMLTD.MilliSim.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\thirdparty\MilliSim\src\plugins\OpenMLTD.MilliSim.Extension.Audio.StandardAudioFormats\OpenMLTD.MilliSim.Extension.Audio.StandardAudioFormats.csproj">
+      <Project>{001c2077-8f69-4318-9096-a52c215b4c44}</Project>
+      <Name>OpenMLTD.MilliSim.Extension.Audio.StandardAudioFormats</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\thirdparty\MilliSim\src\plugins\OpenMLTD.MilliSim.Extension.Components.CoreComponents\OpenMLTD.MilliSim.Extension.Components.CoreComponents.csproj">
+      <Project>{16575a6d-f4a1-4910-a112-db1d62ef6342}</Project>
+      <Name>OpenMLTD.MilliSim.Extension.Components.CoreComponents</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Contents\res\img\air_input.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\arc_body.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\arc_body_hi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\arc_cap.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\bg\base_conflict.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\finish_line.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\note_dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\note_hold_dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\note_hold_dark_hi.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\tap_d.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\track_dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Contents\res\img\track_lane_divider.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

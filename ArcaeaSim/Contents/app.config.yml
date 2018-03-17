@@ -1,0 +1,17 @@
+# @include <config/**/*.yml>
+
+# Notes:
+# 1. Please save this configuration file with UTF-8 encoding without BOM, codepage 65001.
+# 2. Numeric values in 'layout' section can appear in 2 forms, integer (interpreted as pixels)
+# or percentage (calculated based on window size).
+# 3. MilliSim uses BGM time as the standard time. If BGM is not loaded, uses BGA instead. If neither is loaded, uses game time.
+metadata:
+  type: Moe.Mottomo.ArcaeaSim.Configuration.MainAppConfig
+  assembly_file: ArcaeaSim.exe
+  for: "@main"
+  version: 1 # format version
+data:
+  window:
+    width: 800 # width of the window's client area, in pixels
+    height: 600 # height of the window's client area, in pixels
+    title: "ArcaeaSim" # main title of the window

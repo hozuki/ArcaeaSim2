@@ -1,0 +1,1 @@
+@ArcaeaSim.exe --debug
