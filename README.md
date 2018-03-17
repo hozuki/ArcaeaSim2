@@ -9,23 +9,27 @@ However, neither is it expected to go beyond the line to be a clone of Arcaea.
 
 - [Demo video 1](https://www.bilibili.com/video/av19881005/) (even before the initial commit; a very early technical preview so it may not look very appealing)
 - [Demo video 2](https://www.bilibili.com/video/av19981419/) (that's better)
+- [Demo video 3](https://www.bilibili.com/video/av20162946/) (even better)
+
+**NOTICE:** ArcaeaSim was once taken down by [DMCA request](https://github.com/github/dmca/blob/master/2018/2018-03-15-Arcaea.md) because of using copyrighted materials.
+In newer commits (i.e. after 15th March 2018) those materials are all removed, so when you run the application you will not see a UI like in those videos.
 
 | Downloads| |
 |--|--|
-| [GitHub Releases](https://github.com/hozuki/ArcaeaSim/releases) | ![GitHub (pre-)release](https://img.shields.io/github/release/hozuki/ArcaeaSim/all.svg) ![Github All Releases](https://img.shields.io/github/downloads/hozuki/ArcaeaSim/total.svg) |
-| [AppVeyor](https://ci.appveyor.com/api/projects/hozuki/ArcaeaSim/artifacts/arcaeasim-appveyor-latest.zip) | (latest development build) |
+| [GitHub Releases](https://github.com/hozuki/ArcaeaSim2/releases) | ![GitHub (pre-)release](https://img.shields.io/github/release/hozuki/ArcaeaSim2/all.svg) ![Github All Releases](https://img.shields.io/github/downloads/hozuki/ArcaeaSim2/total.svg) |
+| [AppVeyor](https://ci.appveyor.com/api/projects/hozuki/ArcaeaSim2/artifacts/arcaeasim-appveyor-latest.zip) | (latest development build) |
 
 | Build Status | |
 |--|--|
-| AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/hozuki/ArcaeaSim.svg)](https://ci.appveyor.com/project/hozuki/ArcaeaSim) |
+| AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/hozuki/ArcaeaSim2.svg)](https://ci.appveyor.com/project/hozuki/ArcaeaSim2) |
 
 **Stage:** alpha
 
 **Miscellaneous:**
 
-[![GitHub contributors](https://img.shields.io/github/contributors/hozuki/ArcaeaSim.svg)](https://github.com/hozuki/ArcaeaSim/graphs/contributors)
-[![Libraries.io for GitHub](https://img.shields.io/librariesio/github/hozuki/ArcaeaSim.svg)](https://github.com/hozuki/ArcaeaSim)
-[![license](https://img.shields.io/github/license/hozuki/ArcaeaSim.svg)](LICENSE.txt)
+[![GitHub contributors](https://img.shields.io/github/contributors/hozuki/ArcaeaSim2.svg)](https://github.com/hozuki/ArcaeaSim2/graphs/contributors)
+[![Libraries.io for GitHub](https://img.shields.io/librariesio/github/hozuki/ArcaeaSim2.svg)](https://github.com/hozuki/ArcaeaSim2)
+[![license](https://img.shields.io/github/license/hozuki/ArcaeaSim2.svg)](LICENSE.txt)
 
 ## Usage
 
@@ -38,11 +42,11 @@ Like MilliSim, you will need:
 - [Visual C++ 2015 Runtime](https://www.microsoft.com/en-us/download/details.aspx?id=53587)
 - OpenAL (bundled OpenAL-Soft Win32 build in newer releases)
 
-There are four test songs included in the repo:
+Test song(s) included in the repo:
 
-| [Grievous Lady](http://lowiro.wikia.com/wiki/Grievous_Lady) | [Metallic Punisher](http://lowiro.wikia.com/wiki/Metallic_Punisher_%28Song%29) | [Red and Blue](http://lowiro.wikia.com/wiki/Red_and_Blue) | [Snow White](http://lowiro.wikia.com/wiki/Snow_White) |
+| Song | Cover | Composer(s) | Beatmap Author(s) |
 |---|---|---|---|
-| <img src="ArcaeaSim/Contents/game/grievouslady/base_256.jpg" width="128" /> | <img src="ArcaeaSim/Contents/game/metallicpunisher/base_256.jpg" width="128" /> | <img src="ArcaeaSim/Contents/game/redandblue/base_256.jpg" width="128" /> | <img src="ArcaeaSim/Contents/game/snowwhite/base_256.jpg" width="128" /> |
+| The Silence | <img src="ArcaeaSim/Contents/game/The Silence/base_256.jpg" width="128" /> | JDF | JDF |
 
 1. You can set the window properties (e.g. window size) in `Contents/app.config.yml`.
 2. You can set the background image properties in `Contents/config/background_image.yml`.
@@ -82,5 +86,5 @@ Use English wherever you can. This makes it easier for contributors from various
 
 The code is open-sourced under BSD 3-Clause Clear license.
 
-However, the test music, beatmap, and image files are copyrighted materials of lowiro Games,
-all rights reserved by their composers and beatmap makers.
+> I REMADE ALL IMAGES BY MYSELF, USED A CUSTOM SONG AND BEATMAP WHICH ARE GRANTED BY THEIR AUTHOR.
+> THERE SHOULD BE NO COPYRIGHT ISSUES NOW.
