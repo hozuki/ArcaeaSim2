@@ -85,8 +85,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 alpha = 0.75f;
                 castShadow = true;
             } else {
-                arcColor = GhostArc;
-                arcSectionSize = new Vector2(metrics.GuidingArcWidth, metrics.GuidingArcTallness);
+                arcColor = TraceArc;
+                arcSectionSize = new Vector2(metrics.TraceArcWidth, metrics.TraceArcTallness);
                 alpha = 0.5f;
                 castShadow = false;
             }
@@ -255,7 +255,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         private static readonly Color RedArc = new Color(220, 151, 193).ChangeBrightness(-40);
         private static readonly Color ErrorArc = new Color(0xe6, 0x32, 0x32);
         private static readonly Color BlueArc = Color.DeepSkyBlue.ChangeBrightness(-80);
-        private static readonly Color GhostArc = new Color(80, 67, 104).ChangeBrightness(30);
+        private static readonly Color TraceArc = new Color(80, 67, 104).ChangeBrightness(30);
 
         private readonly ArcNote _baseNote;
         private readonly StageMetrics _metrics;

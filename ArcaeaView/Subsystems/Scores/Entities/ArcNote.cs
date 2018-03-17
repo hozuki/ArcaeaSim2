@@ -48,18 +48,18 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Entities {
         public string Unknown1 { get; set; }
 
         /// <summary>
-        /// Whether this note a guiding arc (i.e. not playble, translucent).
+        /// Whether this note a trace arc (i.e. not playble, translucent).
         /// </summary>
-        public bool IsGuiding { get; set; }
+        public bool IsTraceArc { get; set; }
 
         /// <summary>
         /// Whether this note a playable arc (i.e. must be tracked with your fingers).
         /// </summary>
-        public bool IsPlayable => !IsGuiding;
+        public bool IsPlayable => !IsTraceArc;
 
         /// <summary>
         /// The sky notes associated with this note.
-        /// The array has a value (i.e. is not null) only when <see cref="IsGuiding"/> is <see langword="true"/>.
+        /// The array has a value (i.e. is not null) only when <see cref="IsTraceArc"/> is <see langword="true"/>.
         /// </summary>
         [CanBeNull]
         public SkyNote[] SkyNotes { get; set; }

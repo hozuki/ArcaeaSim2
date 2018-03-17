@@ -139,7 +139,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Entities {
                     note.EndY = Convert.ToSingle(segs[6]);
                     note.Color = (ArcColor)Convert.ToInt32(segs[7]);
                     note.Unknown1 = segs[8];
-                    note.IsGuiding = Convert.ToBoolean(segs[9]);
+                    note.IsTraceArc = Convert.ToBoolean(segs[9]);
                     note.SkyNotes = arcTapNotes;
 
                     notes.Add(note);
