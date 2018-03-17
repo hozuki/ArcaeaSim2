@@ -8,12 +8,12 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
     /// Actually front-less and back-less (LOL).
     /// Uses <see cref="VertexPositionColor" />.
     /// </summary>
-    public sealed class BottomlessColoredTetrahedron : DrawableGeometryMesh {
+    public sealed class BottomlessTexturedTetrahedron : DrawableGeometryMesh {
 
-        public BottomlessColoredTetrahedron([NotNull] GraphicsDevice graphicsDevice) {
+        public BottomlessTexturedTetrahedron([NotNull] GraphicsDevice graphicsDevice) {
             _graphicsDevice = graphicsDevice;
 
-            _vertexBuffer = new VertexBuffer(graphicsDevice, VertexPositionColor.VertexDeclaration, 4, BufferUsage.WriteOnly);
+            _vertexBuffer = new VertexBuffer(graphicsDevice, VertexPositionColorTexture.VertexDeclaration, 4, BufferUsage.WriteOnly);
             _indexBuffer = new IndexBuffer(graphicsDevice, IndexElementSize.SixteenBits, 9, BufferUsage.WriteOnly);
 
             var indices = new ushort[] {
@@ -42,10 +42,10 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Rendering {
             var dzUp = dzDown;
 
             var vertices = new[] {
-                new VertexPositionColor {Position = new Vector3(point.X, point.Y, point.Z + dzUp), Color = color},
-                new VertexPositionColor {Position = new Vector3(point.X, point.Y - dy, point.Z - dzDown), Color = color},
-                new VertexPositionColor {Position = new Vector3(point.X - dx, point.Y, point.Z - dzDown), Color = color},
-                new VertexPositionColor {Position = new Vector3(point.X + dx, point.Y, point.Z - dzDown), Color = color},
+                new VertexPositionColorTexture {Position = new Vector3(point.X, point.Y, point.Z + dzUp), Color = color, TextureCoordinate = new Vector2(1, 0)},
+                new VertexPositionColorTexture {Position = new Vector3(point.X, point.Y - dy, point.Z - dzDown), Color = color, TextureCoordinate = new Vector2(0, 1)},
+                new VertexPositionColorTexture {Position = new Vector3(point.X - dx, point.Y, point.Z - dzDown), Color = color, TextureCoordinate = new Vector2(0, 0)},
+                new VertexPositionColorTexture {Position = new Vector3(point.X + dx, point.Y, point.Z - dzDown), Color = color, TextureCoordinate = new Vector2(0, 0)},
             };
 
             _vertexBuffer.SetData(vertices);

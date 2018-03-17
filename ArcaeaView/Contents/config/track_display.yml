@@ -11,3 +11,4 @@ data:
   note_hold_texture: Contents/res/img/note_hold_dark.png
   note_hold_highlighted_texture: Contents/res/img/note_hold_dark_hi.png
   note_sky_texture: Contents/res/img/tap_d.png
+  note_arc_texture: Contents/res/img/arc_body.png

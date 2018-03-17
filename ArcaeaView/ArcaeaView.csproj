@@ -75,6 +75,8 @@
     <Compile Include="Extensions\Vector3Extensions.cs" />
     <Compile Include="Subsystems\Rendering\BottomlessColoredTetrahedron.cs" />
     <Compile Include="Subsystems\Rendering\BottomlessColoredTriangularPrism.cs" />
+    <Compile Include="Subsystems\Rendering\BottomlessTexturedTetrahedron.cs" />
+    <Compile Include="Subsystems\Rendering\BottomlessTexturedTriangularPrism.cs" />
     <Compile Include="Subsystems\Rendering\Camera.cs" />
     <Compile Include="Core\MathF.cs" />
     <Compile Include="Subsystems\Rendering\ColoredBox.cs" />
