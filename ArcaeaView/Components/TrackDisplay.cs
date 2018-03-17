@@ -157,7 +157,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
 
             const float offsetZoomScale = 1.0f;
 
-            _trackRectangle.SetVerticesXY(new Vector2(-metrics.HalfTrackFullWidth, -metrics.TrackLength * 0.1f), new Vector2(metrics.TrackFullWidth, metrics.TrackLength * 1.1f), new Color(Color.White, 0.9f), currentY * offsetZoomScale, 0);
+            _trackRectangle.SetVerticesXY(new Vector2(-metrics.HalfTrackFullWidth, -metrics.TrackLength * 0.1f), new Vector2(metrics.TrackFullWidth, metrics.TrackLength * 1.1f), Color.White, currentY * offsetZoomScale, 0);
 
             _trackRectangle.Draw(_basicEffect.CurrentTechnique);
         }
