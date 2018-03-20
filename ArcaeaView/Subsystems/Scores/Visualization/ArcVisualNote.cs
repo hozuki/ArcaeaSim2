@@ -39,11 +39,11 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             var startX = (n.StartX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
             var startY = PreviewStartY - currentY;
-            var startZ = metrics.SkyInputZ * n.StartY + metrics.PlayableArcTallness * (1 - n.StartY) / 4;
+            var startZ = metrics.SkyInputZ * n.StartY + metrics.ArcHeightLowerBorder * (1 - n.StartY);
 
             var endX = (n.EndX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
             var endY = PreviewEndY - currentY;
-            var endZ = metrics.SkyInputZ * n.EndY + metrics.PlayableArcTallness * (1 - n.EndY) / 4;
+            var endZ = metrics.SkyInputZ * n.EndY + metrics.ArcHeightLowerBorder * (1 - n.EndY);
 
             var start = new Vector3(startX, startY, startZ);
             var end = new Vector3(endX, endY, endZ);
@@ -245,7 +245,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                     effect.TextureEnabled = false;
                     effect.VertexColorEnabled = true;
 
-                    effect.Alpha = 0.5f;
+                    effect.Alpha = 0.3f;
 
                     _shadow.Draw(effect.CurrentTechnique);
                 }
@@ -261,9 +261,9 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         private Texture2D _supportTexture;
         private Texture2D _arcVisualNoteTexture;
 
-        private static readonly Color RedArc = new Color(220, 151, 193).ChangeBrightness(-40);
+        private static readonly Color RedArc = new Color(220, 151, 193);
         private static readonly Color ErrorArc = new Color(0xe6, 0x32, 0x32);
-        private static readonly Color BlueArc = Color.DeepSkyBlue.ChangeBrightness(-80);
+        private static readonly Color BlueArc = Color.DeepSkyBlue;
         private static readonly Color TraceArc = new Color(80, 67, 104).ChangeBrightness(30);
 
         private readonly ArcNote _baseNote;
