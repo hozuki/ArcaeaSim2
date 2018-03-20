@@ -77,24 +77,24 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             Color arcColor;
             Vector2 arcSectionSize;
             float alpha;
-            bool castShadow;
+            float shadowAlpha;
 
             if (n.IsPlayable) {
                 arcColor = n.Color == ArcColor.Magenta ? RedArc : BlueArc;
                 arcSectionSize = new Vector2(metrics.PlayableArcWidth, metrics.PlayableArcTallness);
                 alpha = 0.75f;
-                castShadow = true;
+                shadowAlpha = 0.3f;
             } else {
                 arcColor = TraceArc;
                 arcSectionSize = new Vector2(metrics.TraceArcWidth, metrics.TraceArcTallness);
                 alpha = 0.5f;
-                castShadow = false;
+                shadowAlpha = 0.1f;
             }
 
             var segmentCount = n.EndTick - n.StartTick > 1000 ? 14 : 7;
             var effect = (BasicEffect)NoteEffects.Effects[(int)n.Type];
 
-            DrawArc(effect, segmentCount, start, end, n.Easing, arcColor, alpha, arcSectionSize, castShadow);
+            DrawArc(effect, segmentCount, start, end, n.Easing, arcColor, alpha, arcSectionSize, shadowAlpha);
 
             if (n.IsPlayable) {
                 if (ShouldDrawHeader && beatmapTicks <= n.StartTick) {
@@ -181,7 +181,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             _header = null;
         }
 
-        private void DrawArc([NotNull] BasicEffect effect, int segmentCount, Vector3 start, Vector3 end, ArcEasing easing, Color color, float alpha, Vector2 arcSectionSize, bool castShadow) {
+        private void DrawArc([NotNull] BasicEffect effect, int segmentCount, Vector3 start, Vector3 end, ArcEasing easing, Color color, float alpha, Vector2 arcSectionSize, float shadowAlpha) {
             var lastPoint = start;
             var zeroY = _metrics.FinishLineY;
             var trackEndY = _metrics.TrackLength;
@@ -238,17 +238,15 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
                 _arcMesh.Draw(effect.CurrentTechnique);
 
-                // Draw shadow if needed.
-                if (castShadow) {
-                    _shadow.SetVerticesXYParallel(fixedLastPoint.XY(), fixedCurrentPoint.XY(), arcSectionSize.X, Color.Gray, ShadowZ);
+                // Draw shadow.
+                _shadow.SetVerticesXYParallel(fixedLastPoint.XY(), fixedCurrentPoint.XY(), arcSectionSize.X, Color.Gray, ShadowZ);
 
-                    effect.TextureEnabled = false;
-                    effect.VertexColorEnabled = true;
+                effect.TextureEnabled = false;
+                effect.VertexColorEnabled = true;
 
-                    effect.Alpha = 0.3f;
+                effect.Alpha = shadowAlpha;
 
-                    _shadow.Draw(effect.CurrentTechnique);
-                }
+                _shadow.Draw(effect.CurrentTechnique);
 
                 // Update the point.
                 lastPoint = currentPoint;
