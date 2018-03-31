@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Moe.Mottomo.ArcaeaSim.Components;
 using Moe.Mottomo.ArcaeaSim.Configuration;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Interactive;
@@ -16,7 +18,6 @@ using OpenMLTD.MilliSim.Foundation.Extending;
 using OpenMLTD.MilliSim.Foundation.Extensions;
 using OpenMLTD.MilliSim.Globalization;
 using OpenMLTD.MilliSim.Graphics;
-using SharpAL.OpenAL;
 
 namespace Moe.Mottomo.ArcaeaSim {
     /// <inheritdoc />
@@ -108,8 +109,8 @@ namespace Moe.Mottomo.ArcaeaSim {
                         }
                         break;
                     case Keys.F6: {
-                            var audioController = this.FindSingleElement<BackgroundMusic>();
-                            audioController?.Music?.Source?.Stop();
+                            var syncTimer = this.FindSingleElement<SyncTimer>();
+                            syncTimer?.Stop();
                         }
                         break;
                 }
@@ -128,20 +129,12 @@ namespace Moe.Mottomo.ArcaeaSim {
                                 break;
                             }
 
-                            var isPlaying = music.Source.State == ALSourceState.Playing;
+                            var isPlaying = syncTimer.IsRunning;
 
                             if (!isPlaying) {
-                                music.Source.PlayDirect();
-                                syncTimer.Stopwatch.Start();
+                                syncTimer.Start();
                             } else {
-                                music.Source.Pause();
-                                syncTimer.Stopwatch.Stop();
-                            }
-
-                            var helpOverlay = this.FindSingleElement<HelpOverlay>();
-
-                            if (helpOverlay != null) {
-                                helpOverlay.Visible = isPlaying;
+                                syncTimer.Pause();
                             }
                         }
                         break;
@@ -213,22 +206,31 @@ namespace Moe.Mottomo.ArcaeaSim {
                 helpOverlay.Visible = true;
             }
 
-            var audioController = this.FindSingleElement<BackgroundMusic>();
-            var music = audioController?.Music;
+            var syncTimer = this.FindSingleElement<SyncTimer>();
 
-            if (music != null) {
-                music.Source.PlaybackStopped += (s, e) => {
-                    if (helpOverlay != null) {
-                        helpOverlay.Visible = true;
-                    }
+            Debug.Assert(syncTimer != null, nameof(syncTimer) + " != null");
 
-                    var syncTimer = this.FindSingleElement<SyncTimer>();
-
-                    Debug.Assert(syncTimer != null, nameof(syncTimer) + " != null");
-
-                    syncTimer.Stopwatch.Reset();
-                };
-            }
+            syncTimer.StateChanged += (s, e) => {
+                switch (e.NewState) {
+                    case MediaState.Stopped:
+                        if (helpOverlay != null) {
+                            helpOverlay.Visible = true;
+                        }
+                        break;
+                    case MediaState.Playing:
+                        if (helpOverlay != null) {
+                            helpOverlay.Visible = false;
+                        }
+                        break;
+                    case MediaState.Paused:
+                        if (helpOverlay != null) {
+                            helpOverlay.Visible = true;
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            };
         }
 
         private Stage _stage;
