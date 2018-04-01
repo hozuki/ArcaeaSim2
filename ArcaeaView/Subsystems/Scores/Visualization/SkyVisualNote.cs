@@ -102,7 +102,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             // Cast shadow
             effect.TextureEnabled = false;
             effect.VertexColorEnabled = true;
-            effect.Alpha = 0.5f;
+            effect.Alpha = 0.75f;
 
             _shadowRectangle.Draw(effect.CurrentTechnique);
         }

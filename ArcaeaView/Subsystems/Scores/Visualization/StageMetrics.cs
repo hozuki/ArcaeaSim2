@@ -21,7 +21,7 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
 
             LaneDividerWidth = 0.2f;
 
-            FloorNoteWidth = TrackInnerWidth / 64 * 15;
+            FloorNoteWidth = TrackInnerWidth / 48 * 11;
             FloorNoteHeight = TrackInnerWidth / 8;
 
             SkyNoteWidth = TrackInnerWidth / 4;
@@ -39,8 +39,11 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
             PlayableArcWidth = 2f;
             PlayableArcTallness = 2f;
 
-            GuidingArcWidth = 0.25f;
-            GuidingArcTallness = 0.25f;
+            TraceArcWidth = PlayableArcWidth / 6;
+            TraceArcTallness = PlayableArcTallness / 6;
+
+            ArcHeightLowerBorder = 0.75f;
+
 
             PastTickThreshold = 0;
             FutureTickThreshold = 4000;
@@ -148,14 +151,19 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
         public float PlayableArcTallness { get; set; }
 
         /// <summary>
-        /// Guiding arc section width.
+        /// Trace arc section width.
         /// </summary>
-        public float GuidingArcWidth { get; set; }
+        public float TraceArcWidth { get; set; }
 
         /// <summary>
-        /// Guiding arc tallness.
+        /// Trace arc tallness.
         /// </summary>
-        public float GuidingArcTallness { get; set; }
+        public float TraceArcTallness { get; set; }
+
+        /// <summary>
+        /// The height of an arc when its z == 0.
+        /// </summary>
+        public float ArcHeightLowerBorder { get; set; }
 
         /// <summary>
         /// Past tick threshold, in milliseconds. Notes whose tick or ending tick is before <code>beatmapTick + PastTickThreshold</code> will not be drawn.

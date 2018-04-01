@@ -58,10 +58,10 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Scores.Visualization {
                 var ratio = (float)(((SkyNote)synced.BaseNote).Tick - n.StartTick) / (n.EndTick - n.StartTick);
 
                 var startX = (n.StartX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
-                var startZ = metrics.SkyInputZ * n.StartY + metrics.PlayableArcTallness * (1 - n.StartY) / 4;
+                var startZ = metrics.SkyInputZ * n.StartY + metrics.ArcHeightLowerBorder * (1 - n.StartY);
 
                 var endX = (n.EndX - -0.5f) * metrics.TrackInnerWidth / (1.5f - -0.5f) - metrics.HalfTrackInnerWidth;
-                var endZ = metrics.SkyInputZ * n.EndY + metrics.PlayableArcTallness * (1 - n.EndY) / 4;
+                var endZ = metrics.SkyInputZ * n.EndY + metrics.ArcHeightLowerBorder * (1 - n.EndY);
 
                 var start = new Vector3(startX, 1, startZ);
                 var end = new Vector3(endX, 1, endZ);
