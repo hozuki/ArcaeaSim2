@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C268C104-0
 		docs\Starting.md = docs\Starting.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMLTD.Piyopiyo", "thirdparty\MilliSim\thirdparty\piyopiyo\src\OpenMLTD.Piyopiyo\OpenMLTD.Piyopiyo.csproj", "{84A82E83-D04F-49B4-AD55-C6F4CC800F05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,14 @@ Global
 		{0CAC6757-EF46-4157-9ED6-08E3FBE591BD}.Release|Any CPU.Build.0 = Release|x86
 		{0CAC6757-EF46-4157-9ED6-08E3FBE591BD}.Release|x86.ActiveCfg = Release|x86
 		{0CAC6757-EF46-4157-9ED6-08E3FBE591BD}.Release|x86.Build.0 = Release|x86
+		{84A82E83-D04F-49B4-AD55-C6F4CC800F05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A82E83-D04F-49B4-AD55-C6F4CC800F05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A82E83-D04F-49B4-AD55-C6F4CC800F05}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{84A82E83-D04F-49B4-AD55-C6F4CC800F05}.Debug|x86.Build.0 = Debug|Any CPU
+		{84A82E83-D04F-49B4-AD55-C6F4CC800F05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A82E83-D04F-49B4-AD55-C6F4CC800F05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A82E83-D04F-49B4-AD55-C6F4CC800F05}.Release|x86.ActiveCfg = Release|Any CPU
+		{84A82E83-D04F-49B4-AD55-C6F4CC800F05}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +141,7 @@ Global
 		{001C2077-8F69-4318-9096-A52C215B4C44} = {17D20885-7FF8-40F5-B927-FF731322A011}
 		{16575A6D-F4A1-4910-A112-DB1D62EF6342} = {17D20885-7FF8-40F5-B927-FF731322A011}
 		{C268C104-0856-4563-BE11-9C7CCB62180E} = {56A37D24-2799-4534-97A5-ED97D14232FA}
+		{84A82E83-D04F-49B4-AD55-C6F4CC800F05} = {17D20885-7FF8-40F5-B927-FF731322A011}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {073575D6-F3DA-49D6-ABC3-568EBD34E402}
