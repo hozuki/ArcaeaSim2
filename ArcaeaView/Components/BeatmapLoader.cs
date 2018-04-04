@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using JetBrains.Annotations;
 using Moe.Mottomo.ArcaeaSim.Configuration;
@@ -17,20 +18,28 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             : base(game, parent) {
         }
 
+        public event EventHandler<BeatmapChangedEventArgs> BeatmapChanged;
+
+        [CanBeNull]
+        public Beatmap Beatmap { get; private set; }
+
         /// <summary>
         /// Loads an AFF beatmap from string.
         /// </summary>
         /// <param name="text">AFF beatmap content string.</param>
-        public void Load([NotNull] string text) {
-            Beatmap.TryParse(text, out var beatmap);
+        public void LoadFrom([NotNull] string text) {
+            Beatmap.TryParse(text, out var newBeatmap);
 
-            Beatmap = beatmap;
+            var oldBeatmap = Beatmap;
+            Beatmap = newBeatmap;
+
+            BeatmapChanged?.Invoke(this, new BeatmapChangedEventArgs(oldBeatmap, newBeatmap));
 
             var game = Game.ToBaseGame();
             var debugOverlay = game.FindSingleElement<DebugOverlay>();
 
             if (debugOverlay != null) {
-                if (beatmap != null) {
+                if (newBeatmap != null) {
                     debugOverlay.AddLine($"Loaded beatmap from string.");
                 } else {
                     debugOverlay.AddLine($"Failed to load beatmap from string.");
@@ -42,22 +51,25 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
         /// Loads an AFF beatmap from file.
         /// </summary>
         /// <param name="filePath">Path to the file that contains AFF beatmap data.</param>
-        public void LoadFrom([NotNull] string filePath) {
-            Beatmap beatmap;
+        public void Load([NotNull] string filePath) {
+            Beatmap newBeatmap;
 
             using (var fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                 using (var reader = new StreamReader(fileStream, Encoding.UTF8)) {
-                    Beatmap.TryParse(reader, out beatmap);
+                    Beatmap.TryParse(reader, out newBeatmap);
                 }
             }
 
-            Beatmap = beatmap;
+            var oldBeatmap = Beatmap;
+            Beatmap = newBeatmap;
+
+            BeatmapChanged?.Invoke(this, new BeatmapChangedEventArgs(oldBeatmap, newBeatmap));
 
             var game = Game.ToBaseGame();
             var debugOverlay = game.FindSingleElement<DebugOverlay>();
 
             if (debugOverlay != null) {
-                if (beatmap != null) {
+                if (newBeatmap != null) {
                     debugOverlay.AddLine($"Loaded beatmap from '{filePath}'.");
                 } else {
                     debugOverlay.AddLine($"Failed to load beatmap from '{filePath}'.");
@@ -65,16 +77,13 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             }
         }
 
-        protected override void OnInitialize() {
-            base.OnInitialize();
+        protected override void OnLoadContents() {
+            base.OnLoadContents();
 
             var config = ConfigurationStore.Get<BeatmapLoaderConfig>();
 
-            LoadFrom(config.Data.FilePath);
+            Load(config.Data.FilePath);
         }
-
-        [CanBeNull]
-        public Beatmap Beatmap { get; private set; }
 
     }
 }

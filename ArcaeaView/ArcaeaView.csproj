@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\BeatmapChangedEventArgs.cs" />
     <Compile Include="Configuration\BeatmapLoaderConfig.cs" />
     <Compile Include="Configuration\TrackDisplayConfig.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />

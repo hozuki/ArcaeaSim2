@@ -27,6 +27,14 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             base.OnInitialize();
 
             _stageMetrics = new StageMetrics();
+
+            var game = Game.ToBaseGame();
+
+            var beatmapLoader = game.FindSingleElement<BeatmapLoader>();
+
+            if (beatmapLoader != null) {
+                beatmapLoader.BeatmapChanged += BeatmapLoader_BeatmapChanged;
+            }
         }
 
         protected override void OnLoadContents() {
@@ -42,12 +50,6 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             NoteEffects.Effects[(int)NoteType.Long] = _basicEffect;
             NoteEffects.Effects[(int)NoteType.Arc] = _basicEffect;
             NoteEffects.Effects[(int)NoteType.Sky] = _basicEffect;
-
-            var beatmap = Game.FindSingleElement<BeatmapLoader>()?.Beatmap;
-
-            if (beatmap != null) {
-                _beatmap = new VisualBeatmap(game.GraphicsDevice, beatmap, _stageMetrics);
-            }
 
             var config = ConfigurationStore.Get<TrackDisplayConfig>();
 
@@ -88,7 +90,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
         }
 
         protected override void OnUnloadContents() {
-            _beatmap?.Dispose();
+            _visualBeatmap?.Dispose();
 
             _skyInputTexture?.Dispose();
             _panelTexture?.Dispose();
@@ -100,11 +102,13 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             _noteArcTexture?.Dispose();
 
             _trackRectangle?.Dispose();
+
             if (_laneDividerRectangles != null && _laneDividerRectangles.Length > 0) {
                 foreach (var laneRect in _laneDividerRectangles) {
                     laneRect?.Dispose();
                 }
             }
+
             _finishLineRectangle?.Dispose();
 
             _skyInputRectangle?.Dispose();
@@ -141,6 +145,18 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             DrawFinishLine(graphicsDevice);
             DrawNotes(graphicsDevice, beatmapTicks, currentY);
             DrawSkyInput(graphicsDevice);
+        }
+
+        protected override void Dispose(bool disposing) {
+            var game = Game.ToBaseGame();
+
+            var beatmapLoader = game.FindSingleElement<BeatmapLoader>();
+
+            if (beatmapLoader != null) {
+                beatmapLoader.BeatmapChanged -= BeatmapLoader_BeatmapChanged;
+            }
+
+            base.Dispose(disposing);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -212,7 +228,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void DrawNotes([NotNull] GraphicsDevice graphicsDevice, int beatmapTicks, float currentY) {
-            var beatmap = _beatmap;
+            var beatmap = _visualBeatmap;
 
             if (beatmap == null) {
                 return;
@@ -256,7 +272,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             beatmapTicks = 0;
             currentY = 0;
 
-            var beatmap = _beatmap;
+            var beatmap = _visualBeatmap;
 
             if (beatmap == null) {
                 return;
@@ -278,6 +294,14 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
             currentY = beatmap.CalculateY(beatmapTicks, _stageMetrics, 0);
         }
 
+        private void BeatmapLoader_BeatmapChanged(object sender, BeatmapChangedEventArgs e) {
+            _visualBeatmap?.Dispose(); 
+
+            if (e.NewBeatmap != null) {
+                _visualBeatmap = new VisualBeatmap(Game.GraphicsDevice, e.NewBeatmap, _stageMetrics);
+            }
+        }
+
         private static readonly DepthStencilState DepthEnabled = new DepthStencilState {
             DepthBufferEnable = true,
             DepthBufferWriteEnable = true,
@@ -288,7 +312,7 @@ namespace Moe.Mottomo.ArcaeaSim.Components {
         private SyncTimer _syncTimer;
 
         [CanBeNull]
-        private VisualBeatmap _beatmap;
+        private VisualBeatmap _visualBeatmap;
 
         private Texture2D _panelTexture;
         private Texture2D _trackLaneDividerTexture;
