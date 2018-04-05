@@ -49,6 +49,15 @@
     <Compile Include="Configuration\GlobalizationConfig.cs" />
     <Compile Include="Configuration\MainAppConfig.cs" />
     <Compile Include="Configuration\PluginsConfig.cs" />
+    <Compile Include="Subsystems\Bvs\ArcClient.cs" />
+    <Compile Include="Subsystems\Bvs\ArcCommunication.cs" />
+    <Compile Include="Subsystems\Bvs\ArcServer.cs" />
+    <Compile Include="Subsystems\Bvs\Models\EditReloadRequestParams.cs" />
+    <Compile Include="Subsystems\Bvs\Models\GeneralSimInitializeRequestParams.cs" />
+    <Compile Include="Subsystems\Bvs\Models\GeneralSimInitializeResponseResult.cs" />
+    <Compile Include="Subsystems\Bvs\Models\GeneralSimLaunchedNotificationParams.cs" />
+    <Compile Include="Subsystems\Bvs\Models\Proposals\SelectedFormatDescriptor.cs" />
+    <Compile Include="Subsystems\Bvs\Models\Proposals\SupportedFormatDescriptor.cs" />
     <Compile Include="Subsystems\Interactive\KeyboardStateHandler.cs" />
     <Compile Include="Subsystems\Interactive\KeyEventArgs.cs" />
     <Compile Include="Subsystems\Interactive\MouseCameraControl.cs" />
@@ -64,6 +73,9 @@
     <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
       <HintPath>..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -72,6 +84,12 @@
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHttp, Version=0.1.9.0, Culture=neutral, PublicKeyToken=156364e4f7b202d9, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHttp.0.1.9.0\lib\net20\NHttp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Composition.AttributedModel, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -156,6 +174,10 @@
     <ProjectReference Include="..\thirdparty\MilliSim\src\plugins\OpenMLTD.MilliSim.Extension.Components.CoreComponents\OpenMLTD.MilliSim.Extension.Components.CoreComponents.csproj">
       <Project>{16575a6d-f4a1-4910-a112-db1d62ef6342}</Project>
       <Name>OpenMLTD.MilliSim.Extension.Components.CoreComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\thirdparty\MilliSim\thirdparty\piyopiyo\src\OpenMLTD.Piyopiyo\OpenMLTD.Piyopiyo.csproj">
+      <Project>{84a82e83-d04f-49b4-ad55-c6f4cc800f05}</Project>
+      <Name>OpenMLTD.Piyopiyo</Name>
     </ProjectReference>
     <ProjectReference Include="..\thirdparty\MilliSim\thirdparty\SharpAL\SharpAL\SharpAL.csproj">
       <Project>{dc0f4960-ff4e-4bf4-878c-f76cf1fdde58}</Project>

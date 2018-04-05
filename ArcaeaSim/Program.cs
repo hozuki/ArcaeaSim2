@@ -48,7 +48,7 @@ namespace Moe.Mottomo.ArcaeaSim {
                         var configurationStore = ConfigurationHelper.CreateConfigurationStore(pluginManager);
                         var cultureSpecificInfo = CultureSpecificInfoHelper.CreateCultureSpecificInfo();
 
-                        using (var game = new ArcaeaSimApplication(pluginManager, configurationStore, cultureSpecificInfo)) {
+                        using (var game = new ArcaeaSimApplication(options, pluginManager, configurationStore, cultureSpecificInfo)) {
                             game.Run();
                         }
 

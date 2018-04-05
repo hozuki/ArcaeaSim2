@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Moe.Mottomo.ArcaeaSim.Components;
 using Moe.Mottomo.ArcaeaSim.Configuration;
+using Moe.Mottomo.ArcaeaSim.Subsystems.Bvs;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Interactive;
 using Moe.Mottomo.ArcaeaSim.Subsystems.Plugin;
 using OpenMLTD.MilliSim.Configuration;
@@ -26,8 +27,9 @@ namespace Moe.Mottomo.ArcaeaSim {
     /// </summary>
     public sealed class ArcaeaSimApplication : BaseGame {
 
-        public ArcaeaSimApplication([NotNull] BasePluginManager pluginManager, [NotNull] ConfigurationStore configurationStore, [NotNull] CultureSpecificInfo cultureSpecificInfo)
+        internal ArcaeaSimApplication([NotNull] Options startupOptions, [NotNull] BasePluginManager pluginManager, [NotNull] ConfigurationStore configurationStore, [NotNull] CultureSpecificInfo cultureSpecificInfo)
             : base("Contents", pluginManager) {
+            StartupOptions = startupOptions;
             ConfigurationStore = configurationStore;
             CultureSpecificInfo = cultureSpecificInfo;
 
@@ -40,6 +42,8 @@ namespace Moe.Mottomo.ArcaeaSim {
 
         public override CultureSpecificInfo CultureSpecificInfo { get; }
 
+        internal Options StartupOptions { get; }
+
         protected override void Initialize() {
             AppendComponents();
             AppendExtensionComponents();
@@ -49,6 +53,42 @@ namespace Moe.Mottomo.ArcaeaSim {
             base.Initialize();
 
             InitializeExtensionComponents();
+        }
+
+        protected override void LoadContent() {
+            base.LoadContent();
+
+            var editorServerUri = StartupOptions.EditorServerUri;
+
+            if (!string.IsNullOrWhiteSpace(editorServerUri)) {
+                _communication = new ArcCommunication(this);
+
+                var b = Uri.TryCreate(editorServerUri, UriKind.RelativeOrAbsolute, out var edServerUri);
+
+                if (!b) {
+                    GameLog.Error("Invalid URI format (in editor_server_uri command line param): {0}", editorServerUri);
+                }
+
+                _communication.EditorServerUri = edServerUri;
+
+                var simulatorServerPort = StartupOptions.SimulatorServerPort;
+
+                _communication.Server.Start(simulatorServerPort);
+
+                _communication.Client.SendLaunchedNotification();
+            }
+        }
+
+        protected override void UnloadContent() {
+            if (_communication != null) {
+                _communication.Client.SendSimExitedNotification().Wait(TimeSpan.FromSeconds(2));
+
+                _communication.Server.Stop();
+
+                _communication.Dispose();
+            }
+
+            base.UnloadContent();
         }
 
         private void ApplyConfiguration() {
@@ -234,6 +274,8 @@ namespace Moe.Mottomo.ArcaeaSim {
         }
 
         private Stage _stage;
+        [CanBeNull]
+        private ArcCommunication _communication;
 
     }
 }
