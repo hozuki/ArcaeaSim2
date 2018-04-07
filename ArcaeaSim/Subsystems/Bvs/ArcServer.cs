@@ -162,6 +162,8 @@ namespace Moe.Mottomo.ArcaeaSim.Subsystems.Bvs {
                         }
 
                         backgroundMusic.LoadMusic(param0Object.BackgroundMusicFile);
+                    } else {
+                        backgroundMusic?.LoadMusic(null);
                     }
 
                     beatmapLoader.Load(param0Object.BeatmapFile);
